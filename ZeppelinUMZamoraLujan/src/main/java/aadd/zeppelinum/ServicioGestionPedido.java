@@ -3,6 +3,7 @@ package aadd.zeppelinum;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 
 import org.bson.types.ObjectId;
@@ -19,13 +20,19 @@ import aadd.persistencia.mongo.dao.OpinionDAO;
 public class ServicioGestionPedido {
     
     private static ServicioGestionPedido servicio;
+    private static ZeppelinUMRemoto zeppelinumRemoto;
 
     public static ServicioGestionPedido getServicioGestionPedido() {
         if (servicio == null) {
+            try {
+                zeppelinumRemoto = (ZeppelinUMRemoto) InitialContextUtil.getInstance().lookup( "ejb:AADD2022/ZeppelinUMZamoraLujanEJB/ZeppelinUMRemoto!aadd.zeppelinum.ZeppelinUMRemoto");
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
             servicio = new ServicioGestionPedido();
         }
         return servicio;
-    }   
+    }
     public boolean opinar(Integer usuario, Integer restaurante, String comentario, Double valoracion) {
         OpinionDAO opinionDAO = OpinionDAO.getOpinionDAO();
 
@@ -98,5 +105,10 @@ public class ServicioGestionPedido {
             opinionesDTO.add(opinionDTO);
         }
         return opinionesDTO;
+    }
+    public void crearPedido() {
+        //se crea un pedido, este método deberá tener los atributos necesarios
+        //una vez creado, nos quedamos con el id que le ha generado mongodb y con eso activamos el tiemr
+        zeppelinumRemoto.pedidoIniciado("id del pedido creando en mongodb");
     }
 }

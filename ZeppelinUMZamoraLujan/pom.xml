@@ -110,5 +110,10 @@
 			<artifactId>spring-web</artifactId>
 			<version>5.3.9</version>
 		</dependency>
+		<dependency>
+			<groupId>org.wildfly</groupId>
+			<artifactId>wildfly-client-all</artifactId>
+			<version>20.0.1.Final</version>
+		</dependency>
 	</dependencies>
 </project>
