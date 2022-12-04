@@ -16,12 +16,8 @@ import javax.persistence.Table;
 @Table(name = "categoria_restaurante")
 public class CategoriaRestaurante implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2534398731386584071L;
 	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

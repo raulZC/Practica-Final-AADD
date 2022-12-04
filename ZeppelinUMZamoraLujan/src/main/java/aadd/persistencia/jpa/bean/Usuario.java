@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,13 +20,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "usuario")
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findByEmailClave", query = " SELECT u FROM Usuario u WHERE u.email = :email and u.clave = :clave "),
-    @NamedQuery(name = "Usuario.findByEmail", query = " SELECT u FROM Usuario u WHERE u.email = :email ")
-})
+		@NamedQuery(name = "Usuario.findByEmailClave", query = " SELECT u FROM Usuario u WHERE u.email = :email and u.clave = :clave "),
+		@NamedQuery(name = "Usuario.findByEmail", query = " SELECT u FROM Usuario u WHERE u.email = :email ") })
 public class Usuario implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -6306936087236045038L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +46,12 @@ public class Usuario implements Serializable {
 	private boolean validado;
 	@OneToMany(mappedBy = "usuario")
 	private List<Incidencia> incidencias;
+	@OneToMany(mappedBy = "responsable", cascade = CascadeType.ALL)
+	private List<Restaurante> restaurantes;
+
+	public Usuario() {
+		super();
+	}
 
 	public Integer getId() {
 		return id;
@@ -113,8 +117,20 @@ public class Usuario implements Serializable {
 		this.validado = validado;
 	}
 
-	public Usuario() {
-		super();
+	public List<Incidencia> getIncidencias() {
+		return incidencias;
+	}
+
+	public void setIncidencias(List<Incidencia> incidencias) {
+		this.incidencias = incidencias;
+	}
+
+	public List<Restaurante> getRestaurantes() {
+		return restaurantes;
+	}
+
+	public void setRestaurantes(List<Restaurante> restaurantes) {
+		this.restaurantes = restaurantes;
 	}
 
 }

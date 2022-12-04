@@ -9,6 +9,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 
+import aadd.persistencia.mongo.bean.Direccion;
 import aadd.persistencia.mongo.bean.Opinion;
 
 public class OpinionDAO extends ExtensionMongoDAO<Opinion> {
@@ -49,6 +50,7 @@ public class OpinionDAO extends ExtensionMongoDAO<Opinion> {
         }
         return opiniones;
     }
+   
 }
 
 
