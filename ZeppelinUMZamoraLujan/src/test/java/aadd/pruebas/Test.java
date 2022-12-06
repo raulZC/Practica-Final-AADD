@@ -6,8 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.jpa.EntityManagerHelper;
+import aadd.persistencia.jpa.bean.Incidencia;
+import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoUsuario;
+import aadd.persistencia.jpa.bean.Usuario;
+import aadd.persistencia.jpa.dao.IncidenciaDAO;
+import aadd.persistencia.jpa.dao.RestauranteDAO;
+import aadd.persistencia.jpa.dao.UsuarioDAO;
 import aadd.zeppelinum.ServicioGestionPedido;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
@@ -138,23 +147,41 @@ class Test {
 		assertTrue(cr != null);
 
 	}
+
 	@org.junit.jupiter.api.Test
 	void addCategoriaARestaurante() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		assertTrue(servicio.addCategoriaARestaurante(1, 1));
 		assertFalse(servicio.addCategoriaARestaurante(1, 9));
 		assertTrue(servicio.addCategoriaARestaurante(3, 1));
-		
 
 	}
-	
+
 	@org.junit.jupiter.api.Test
 	void cambiarDisponibilidadPlato() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		assertTrue(servicio.cambiarDispPlato(1, false));
-		
-		
+
 	}
 
+	@org.junit.jupiter.api.Test
+	void crearIncidencia() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		
+		assertTrue(servicio.crearIncidencia("No ha llegado el pedido", 1, 4) != null);
+
+		
+
+	}
+	@org.junit.jupiter.api.Test
+	void findIncidenciasByUsuario() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		
+		
+		assertTrue(servicio.getIncidenciasByUsuario(2).isEmpty());
+		assertFalse(servicio.getIncidenciasByUsuario(1).isEmpty());
+		assertTrue(servicio.getIncidenciasByUsuario(1).size()==4);
+		
+	}
 
 }

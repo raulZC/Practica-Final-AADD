@@ -39,6 +39,10 @@ public abstract class ExtensionDAO<T> implements DAO<T> {
     public void save(T t, EntityManager em) {
         em.persist(t);
     }
+    @Override
+    public void update(T t, EntityManager em) {
+        em.merge(t);
+    }
 
     @Override
     public List<T> getAll() {

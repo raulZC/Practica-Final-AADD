@@ -125,5 +125,13 @@ public class Restaurante implements Serializable {
 	public void setCategorias(List<CategoriaRestaurante> categorias) {
 		this.categorias = categorias;
 	}
+
+	public List<Incidencia> getIncidencias() {
+		return incidencias;
+	}
+
+	public void setIncidencias(List<Incidencia> incidencias) {
+		this.incidencias = incidencias;
+	}
 	
 }

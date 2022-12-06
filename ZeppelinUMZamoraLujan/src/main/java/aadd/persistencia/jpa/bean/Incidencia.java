@@ -20,7 +20,7 @@ public class Incidencia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	@Column(name = "fecha_creacion")
+	@Column(name = "fecha_creacion", columnDefinition = "DATE")
 	private LocalDate fechaCreacion;
 	@Column(name = "descripcion")
 	@Lob
@@ -66,6 +66,18 @@ public class Incidencia {
 	}
 	public void setComentarioCierre(String comentarioCierre) {
 		this.comentarioCierre = comentarioCierre;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	public Restaurante getRestaurante() {
+		return restaurante;
+	}
+	public void setRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
 	}
 
 }
