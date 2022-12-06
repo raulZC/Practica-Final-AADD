@@ -138,5 +138,15 @@ class Test {
 		assertTrue(cr != null);
 
 	}
+	@org.junit.jupiter.api.Test
+	void addCategoriaARestaurante() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		assertTrue(servicio.addCategoriaARestaurante(1, 1));
+		assertFalse(servicio.addCategoriaARestaurante(1, 9));
+		assertTrue(servicio.addCategoriaARestaurante(3, 1));
+		
+
+	}
+
 
 }

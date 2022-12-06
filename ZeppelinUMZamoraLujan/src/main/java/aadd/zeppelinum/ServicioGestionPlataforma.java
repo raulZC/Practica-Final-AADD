@@ -276,6 +276,46 @@ public class ServicioGestionPlataforma {
 	    return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}
 	
+	public boolean addCategoriaARestaurante(Integer idRestaurante, Integer idCategoria) {
+	    EntityManager em = EntityManagerHelper.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+
+	        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
+	        if (restaurante == null) {
+	            return false; // el restaurante no existe
+	        }
+
+	        CategoriaRestaurante categoria = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findById(idCategoria);
+	        if (categoria == null) {
+	            return false; // la categoría no existe
+	        }
+
+	        if(!restaurante.getCategorias().add(categoria)) {
+	        	return false; // Si ya existe en la relación
+	        }
+	        if(categoria.getRestaurantes().add(restaurante)) {
+	        	return false;	// Si ya existe en la relacción
+	        }
+	        
+	       
+	        RestauranteDAO.getRestauranteDAO().save(restaurante, em);
+	        CategoriaRestauranteDAO.getCategoriaRestauranteDAO().save(categoria, em);
+	        
+	        em.getTransaction().commit();
+
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return true;
+	    } finally {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        em.close();
+	    }
+	}
+
 	
 	
 	  

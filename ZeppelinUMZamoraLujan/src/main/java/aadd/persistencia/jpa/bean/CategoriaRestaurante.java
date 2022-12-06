@@ -40,5 +40,12 @@ public class CategoriaRestaurante implements Serializable{
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
+	public List<Restaurante> getRestaurantes() {
+		return restaurantes;
+	}
+	public void setRestaurantes(List<Restaurante> restaurantes) {
+		this.restaurantes = restaurantes;
+	}
+	
 
 }

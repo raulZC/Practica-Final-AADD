@@ -117,4 +117,13 @@ public class Restaurante implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public List<CategoriaRestaurante> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<CategoriaRestaurante> categorias) {
+		this.categorias = categorias;
+	}
+	
 }
