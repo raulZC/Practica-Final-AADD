@@ -151,7 +151,7 @@ class Test {
 	@org.junit.jupiter.api.Test
 	void cambiarDisponibilidadPlato() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		assertTrue(servicio.cambiarDispPlato(1, true));
+		assertTrue(servicio.cambiarDispPlato(1, false));
 		
 		
 	}
