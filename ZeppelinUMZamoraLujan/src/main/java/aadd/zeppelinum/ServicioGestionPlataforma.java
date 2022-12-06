@@ -307,7 +307,7 @@ public class ServicioGestionPlataforma {
 	        return true;
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        return true;
+	        return false;
 	    } finally {
 	        if (em.getTransaction().isActive()) {
 	            em.getTransaction().rollback();
@@ -316,6 +316,28 @@ public class ServicioGestionPlataforma {
 	    }
 	}
 
+	public boolean cambiarDispPlato(Integer idPlato, boolean disponible) {
+		
+	    EntityManager em = EntityManagerHelper.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+
+	         Plato plato = PlatoDAO.getPlatoDAO().findById(idPlato);
+	         plato.setDisponibilidad(disponible);
+	         PlatoDAO.getPlatoDAO().save(plato, em);
+	        em.getTransaction().commit();
+	        return true;
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        em.close();
+	    }
+	}
 	
 	
 	  
