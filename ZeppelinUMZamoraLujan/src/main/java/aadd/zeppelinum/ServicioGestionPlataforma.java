@@ -15,10 +15,12 @@ import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.EntityManagerHelper;
+import aadd.persistencia.jpa.bean.CategoriaRestaurante;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.persistencia.jpa.bean.Usuario;
+import aadd.persistencia.jpa.dao.CategoriaRestauranteDAO;
 import aadd.persistencia.jpa.dao.PlatoDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
@@ -167,6 +169,30 @@ public class ServicioGestionPlataforma {
 			em.close();
 		}
 	}
+	
+	public Integer crearCategoriaRestaurante(String nombreCategoria) {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+		try {
+			em.getTransaction().begin();
+
+			CategoriaRestaurante categoriaRestaurante = new CategoriaRestaurante();
+			categoriaRestaurante.setCategoria(nombreCategoria);
+			
+			CategoriaRestauranteDAO.getCategoriaRestauranteDAO().save(categoriaRestaurante, em);
+
+			em.getTransaction().commit();
+			return categoriaRestaurante.getId();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null ;
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
+		}
+	}
 
 	public boolean isUsuarioRegistrado(String email) {
 		List<UsuarioDTO> u = UsuarioDAO.getUsuarioDAO().findByEmail(email);
@@ -249,5 +275,10 @@ public class ServicioGestionPlataforma {
 	public Integer getNumVisitas(Integer idUsuario) {
 	    return zeppelinumRemoto.getNumVisitas(idUsuario);
 	}
+	
+	
+	
+	  
+
 
 }

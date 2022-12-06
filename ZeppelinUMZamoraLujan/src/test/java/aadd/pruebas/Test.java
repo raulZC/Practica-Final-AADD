@@ -126,4 +126,17 @@ class Test {
 		ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();
 		servicio.crearPedido();
 	}
+
+	@org.junit.jupiter.api.Test
+	void crearCategoriaRestaurante() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		Integer cr = servicio.crearCategoriaRestaurante("Asiático");
+		assertTrue(cr != null);
+		cr = servicio.crearCategoriaRestaurante("Italiano");
+		assertTrue(cr != null);
+		cr = servicio.crearCategoriaRestaurante("Fast food");
+		assertTrue(cr != null);
+
+	}
+
 }
