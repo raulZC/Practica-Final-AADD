@@ -17,7 +17,7 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 public class RegistroWeb implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String nombre;
 	private String apellidos;
 	private String correo;
@@ -27,6 +27,8 @@ public class RegistroWeb implements Serializable {
 	private String tipo;
 	@Inject
 	protected FacesContext facesContext;
+	@Inject
+	protected UserSessionWeb userSessionWeb;
 
 	public void registro() {
 		/**
@@ -38,6 +40,14 @@ public class RegistroWeb implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Ya existe un usuario con el email " + correo));
 			return;
 		}
+
+		if (TipoUsuario.valueOf(tipo) == TipoUsuario.RIDER)
+			if (!userSessionWeb.isLogin() || (userSessionWeb.isLogin() && !userSessionWeb.isAdmin())) {
+				facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "",
+						"Solo un Usuario ADMIN puede registrar un usuario RIDER"));
+				return;
+			}
+
 		Integer idUser = ServicioGestionPlataforma.getServicioGestionPlataforma().registrarUsuario(nombre, apellidos,
 				fechaNacimiento, correo, clave, TipoUsuario.valueOf(tipo));
 		if (idUser != null) {

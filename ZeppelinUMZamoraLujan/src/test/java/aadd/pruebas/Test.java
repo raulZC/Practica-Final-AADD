@@ -25,8 +25,8 @@ class Test {
 	void crearUsuario() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		LocalDate fechaNacimiento = LocalDate.of(1990, 1, 8);
-		Integer usuario = servicio.registrarUsuario("Periquita", "Palotes", fechaNacimiento, "periquita@palotes.es",
-				"12345", TipoUsuario.RESTAURANTE);
+		Integer usuario = servicio.registrarUsuario("ADMIN", "ADMIN", fechaNacimiento, "ADMIN@ADMIN.es",
+				"1234", TipoUsuario.ADMIN);
 		assertTrue(usuario != null);
 	}
 
