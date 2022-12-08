@@ -1,5 +1,6 @@
 package aadd.persistencia.mongo.dao;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,7 @@ import org.bson.conversions.Bson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Indexes;
-import com.mongodb.client.model.geojson.Point;
-import com.mongodb.client.model.geojson.Position;
 
-import aadd.persistencia.mongo.bean.Direccion;
-import aadd.persistencia.mongo.bean.Opinion;
 import aadd.persistencia.mongo.bean.Pedido;
 
 public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
@@ -31,6 +27,23 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 	public void createCollection() {
 		collection = db.getCollection("pedido", Pedido.class).withCodecRegistry(defaultCodecRegistry);
 	}
+	
+	
+	public Pedido crearPedido(Integer cliente, Integer repartidor, Integer restaurante, String direccion,
+			LocalDate fechaHora, LocalDate fechaEsperado, String comentario, Double importe) {
+		Pedido ped = new Pedido();
+		ped.setCliente(cliente);
+		ped.setRepartidor(repartidor);
+		ped.setRestaurante(restaurante);
+		ped.setDireccion(direccion);
+		ped.setFechaHora(fechaHora);
+		ped.setFechaEsperado(fechaEsperado);
+		ped.setComentario(comentario);
+		ped.setImporte(importe);
+		collection.insertOne(ped);
+		return ped;
+	}
+
 
 	public List<Pedido> findByCliente(Integer cliente) {
 

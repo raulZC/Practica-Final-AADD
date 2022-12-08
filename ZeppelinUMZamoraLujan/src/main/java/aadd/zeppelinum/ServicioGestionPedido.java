@@ -107,8 +107,8 @@ public class ServicioGestionPedido {
         return opinionesDTO;
     }
     public void crearPedido() {
-        //se crea un pedido, este método deberá tener los atributos necesarios
-        //una vez creado, nos quedamos con el id que le ha generado mongodb y con eso activamos el tiemr
+    	
+  
         zeppelinumRemoto.pedidoIniciado("id del pedido creando en mongodb");
     }
 }

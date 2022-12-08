@@ -1,19 +1,25 @@
 package aadd.spring.web.restaurante;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 
+import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.map.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.spring.zeppelinum.ServicioGestionSpring;
+import aadd.web.usuario.UserSessionWeb;
 
 @Component
 @Scope("view")
@@ -31,6 +37,10 @@ public class LazyRestauranteListWeb extends LazyDataModel<RestauranteDTO> {
 
 	private Double latitud;
 	private Double longitud;
+	
+	@Inject
+	private FacesContext facesContext;
+
 
 	public LazyRestauranteListWeb() {
 		latitud = 38.02398012353915;
@@ -53,6 +63,16 @@ public class LazyRestauranteListWeb extends LazyDataModel<RestauranteDTO> {
 		return servicioGestion.buscarRestaurantesLazy(keyword, verNovedades, mejorValorados, sinPenalizacion, latitud,
 				longitud, inicio, size);
 
+	}
+	
+	public void onRestauranteSelect(ActionEvent event) {
+		try {
+			String contextoURL = facesContext.getExternalContext().getApplicationContextPath();
+			facesContext.getExternalContext()
+					.redirect(contextoURL + "/pedido/formPedido.xhtml?id=" +  this.getRowData().getId());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

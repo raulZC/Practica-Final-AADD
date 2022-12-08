@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template_privada.xhtml">
+	<ui:param name="menuseleccionado" value="estilo2" />
+	<ui:define name="title">Realizar Pedido</ui:define>
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="id" value="#{restauranteMenuList.idRestaurante}" />
+			<f:viewAction action="#{restauranteMenuList.loadMenu()}" />
+		</f:metadata>
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="menu">
+			<h3>Pedido a:
+				#{restauranteMenuList.restauranteSeleccionado.nombre}</h3>
+			<p:dataTable var="plato" style="prueba"
+				value="#{restauranteMenuList.menu}" rows="50" id="tabla_header"
+				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:column headerText="Plato">
+					<h:outputText value="#{plato.titulo}" />
+				</p:column>
+				<p:column headerText="Precio">
+					<h:outputText value="#{plato.precio}" />
+				</p:column>
+				<p:column style="width: 200px;" headerText="Añadir">
+				<p:commandButton value="+" style="margin-right:5px"
+				actionListener="#{pedidoWeb.añadirCantidad(plato.id)}" />
+					<f:ajax render="@form" />
+					<h:outputText value="#{pedidoWeb.nombre}" />
+					<p:commandButton value="-" style="margin-right:5px"
+				actionListener="#{pedidoWeb.añadirCantidad(plato.id)}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="Cancelar" style="margin-right:5px"
+				actionListener="#{pedidoWeb.cancelar()}" />
+			<p:commandButton value="Realizar Pedido" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>
