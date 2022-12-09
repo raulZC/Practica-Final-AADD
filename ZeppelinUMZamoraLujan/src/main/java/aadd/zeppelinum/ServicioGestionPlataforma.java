@@ -402,7 +402,10 @@ public class ServicioGestionPlataforma {
 		
 	}
 	
-	  
+	public List<UsuarioDTO> getUsRestauranteNoVal(){
+		
+		return UsuarioDAO.getUsuarioDAO().findRestaurantesNoValidados();
+	}
 
 
 }

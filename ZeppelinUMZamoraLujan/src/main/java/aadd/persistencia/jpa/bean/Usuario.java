@@ -21,7 +21,8 @@ import javax.persistence.Table;
 @Table(name = "usuario")
 @NamedQueries({
 		@NamedQuery(name = "Usuario.findByEmailClave", query = " SELECT u FROM Usuario u WHERE u.email = :email and u.clave = :clave "),
-		@NamedQuery(name = "Usuario.findByEmail", query = " SELECT u FROM Usuario u WHERE u.email = :email ") })
+		@NamedQuery(name = "Usuario.findByEmail", query = " SELECT u FROM Usuario u WHERE u.email = :email "),
+		@NamedQuery(name = "Usuario.findRestNoVal", query = " SELECT u FROM Usuario u WHERE u.tipo = :tipo and u.validado = false")})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = -6306936087236045038L;

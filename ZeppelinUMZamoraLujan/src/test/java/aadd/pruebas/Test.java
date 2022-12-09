@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.EntityManagerHelper;
 import aadd.persistencia.jpa.bean.Incidencia;
 import aadd.persistencia.jpa.bean.Restaurante;
@@ -196,6 +197,19 @@ class Test {
 
 		
 
+	}
+	@org.junit.jupiter.api.Test
+	void findUsuarioRestNoValidados() {
+		
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		
+		assertFalse(servicio.getUsRestauranteNoVal().isEmpty());
+		for (UsuarioDTO u : servicio.getUsRestauranteNoVal()) {
+			
+			System.out.println(u.getNombre());
+		}
+		
+		
 	}
 
 }

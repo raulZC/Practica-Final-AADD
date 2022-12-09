@@ -70,4 +70,15 @@ public class UsuarioDAO extends ExtensionDAO<Usuario> {
 			throw re;
 		}
 	}
+	
+	public List<UsuarioDTO> findRestaurantesNoValidados(){
+		try {
+            Query query = EntityManagerHelper.getEntityManager().createNamedQuery("Usuario.findRestNoVal");
+            query.setParameter("tipo", TipoUsuario.RESTAURANTE);
+            return transformarToDTO(query.getResultList());
+        } catch (RuntimeException re) {
+            throw re;
+        }
+		
+	}
 }
