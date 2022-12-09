@@ -63,5 +63,16 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
         }
     }
 
+    
+    public List<IncidenciaDTO> findNoCerradas(){
+    	
+    	try {
+            Query query = EntityManagerHelper.getEntityManager().createNamedQuery("Incidencia.findNoCerradas");
+            return transformarToDTO(query.getResultList());
+        } catch (RuntimeException re) {
+            throw re;
+        }
+    	
+    }
    
 }

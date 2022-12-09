@@ -168,7 +168,8 @@ class Test {
 	void crearIncidencia() {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		
-		assertTrue(servicio.crearIncidencia("No ha llegado el pedido", 1, 4) != null);
+		assertTrue(servicio.crearIncidencia("No ha llegado el pedido", 1, 1) != null);
+		assertTrue(servicio.crearIncidencia("Envio de la comida incorrecta", 1, 1) != null);
 
 		
 
@@ -180,8 +181,21 @@ class Test {
 		
 		assertTrue(servicio.getIncidenciasByUsuario(2).isEmpty());
 		assertFalse(servicio.getIncidenciasByUsuario(1).isEmpty());
-		assertTrue(servicio.getIncidenciasByUsuario(1).size()==4);
+		assertTrue(servicio.getIncidenciasByUsuario(1).size()==2);
 		
+	}
+	
+	
+	
+	@org.junit.jupiter.api.Test
+	void findIncidenciasNoCerradas() {
+		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		
+		assertFalse(servicio.getIncidenciasNoCerradas().isEmpty());
+		assertTrue(servicio.getIncidenciasNoCerradas().size()==2);
+
+		
+
 	}
 
 }

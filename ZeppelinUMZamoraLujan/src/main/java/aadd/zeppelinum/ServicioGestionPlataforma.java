@@ -396,6 +396,12 @@ public class ServicioGestionPlataforma {
 	}
 	
 	
+	public List<IncidenciaDTO> getIncidenciasNoCerradas(){
+		
+		return IncidenciaDAO.getIncidenciaDAO().findNoCerradas();
+		
+	}
+	
 	  
 
 
