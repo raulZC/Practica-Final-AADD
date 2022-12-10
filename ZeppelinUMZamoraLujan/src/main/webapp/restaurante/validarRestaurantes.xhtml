@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	template="/WEB-INF/template/template_privada.xhtml">
+	<ui:define name="title">
+Validar restaurantes
+</ui:define>
+	<ui:param name="menuseleccionado" value="estilo2" />
+	<ui:define name="content">
+		<c:if test="#{userSessionWeb.isAdmin()}">
+			<h:form id="usuariosRestNoVal">
+				<div style="margin-top: 10px; margin-bottom: 10px;">
+					<h:panelGroup id="panelBuscador">
+						<p:fieldset legend="Buscador" collapsed="false" toggleable="true">
+							<div class="ui-g ui-fluid">
+								<div class="ui-g-2">Palabra clave:</div>
+								<div class="ui-g-10">
+									<p:inputText value="#{restNoValList.keyword}" />
+								</div>
+							</div>
+							<div style="text-align: center;">
+								<p:commandButton value="Buscar"
+									actionListener="#{restNoValList.buscar()}" update="dt_userNV"
+									icon="fa fa-search" />
+							</div>
+							<div style="margin: auto; text-align: center;">
+								<p:ajaxStatus>
+									<f:facet name="start">
+										<i class="pi pi-spin pi-spinner loading-icon"
+											aria-hidden="true"></i>
+									</f:facet>
+									<f:facet name="complete">
+										<h:outputText value="" />
+									</f:facet>
+								</p:ajaxStatus>
+							</div>
+						</p:fieldset>
+					</h:panelGroup>
+				</div>
+				<p:dataTable var="usuario" style="prueba"
+					id="dt_userNV"
+					value="#{restNoValList.usersNoVal}" rows="5" 
+					emptyMessage="No se han encontrado usuarios" paginator="true"
+					rowsPerPageTemplate="5,10,{ShowAll|'Todos'}" rowKey="#{usuario.id}"
+					rowHover="true" selectionMode="single"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuarios">
+
+					<p:column headerText="ID">
+						<h:outputLabel>#{usuario.id}</h:outputLabel>
+					</p:column>
+					<p:column headerText="Nombre">
+						<h:outputLabel>#{usuario.nombre}</h:outputLabel>
+					</p:column>
+					<p:column headerText="Apellidos">
+						<h:outputLabel>#{usuario.apellidos}</h:outputLabel>
+					</p:column>
+					<p:column headerText="Tipo">
+						<h:outputLabel>#{usuario.tipo}</h:outputLabel>
+					</p:column>
+					<p:column headerText="Fecha nacimiento">
+						<h:outputLabel>#{usuario.fechaNacimiento}</h:outputLabel>
+					</p:column>
+					<p:column>
+						<p:commandButton value="Validar" process="@this"
+							update="usuariosRestNoVal:dialogoConfirmacion"
+							oncomplete="PF('confirmarValidacion').show()">
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{restNoValList.userSeleccionado}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+				
+				<p:confirmDialog id="dialogoConfirmacion"
+					widgetVar="confirmarValidacion" showEffect="fade" width="400"
+					message="¿Quiere validar este usuario restaurante?"
+					header="Confirmar" severity="warn">
+					<h:panelGrid columns="2" cellpadding="5" id="detallesUsuario">
+						<h:outputText value="ID: " />
+						<h:outputText value="#{restNoValList.userSeleccionado.id}" />
+						<h:outputText value="Nombre: " />
+						<h:outputText value="#{restNoValList.userSeleccionado.nombre}" />
+						<h:outputText value="Apellidos: " />
+						<h:outputText value="#{restNoValList.userSeleccionado.apellidos}" />
+						<h:outputText value="Tipo: " />
+						<h:outputText value="#{restNoValList.userSeleccionado.tipo}" />
+						<h:outputText value="Fecha nacimiento: " />
+						<h:outputText
+							value="#{restNoValList.userSeleccionado.fechaNacimiento}" />
+					</h:panelGrid>
+						
+					<p:commandButton value="Si" icon="pi pi-check"
+						disabled="#{empty restNoValList.userSeleccionado}"
+						actionListener="#{restNoValList.validar()}"
+						oncomplete="PF('confirmarValidacion').hide()"
+						update="dt_userNV"/>
+					
+					<p:commandButton value="No" type="button"
+						styleClass="ui-button-secondary" icon="pi pi-times"
+						onclick="PF('confirmarValidacion').hide()" />
+				</p:confirmDialog>
+			</h:form>
+		</c:if>
+		
+	</ui:define>
+
+</ui:composition>
