@@ -29,10 +29,7 @@
 				<p:column style="width: 200px;" headerText="Añadir">
 				<p:commandButton value="+" style="margin-right:5px"
 				actionListener="#{pedidoWeb.añadirCantidad(plato.id)}" />
-					<f:ajax render="@form" />
-					<h:outputText value="#{pedidoWeb.nombre}" />
-					<p:commandButton value="-" style="margin-right:5px"
-				actionListener="#{pedidoWeb.añadirCantidad(plato.id)}" />
+					
 				</p:column>
 			</p:dataTable>
 			<p:commandButton value="Cancelar" style="margin-right:5px"
