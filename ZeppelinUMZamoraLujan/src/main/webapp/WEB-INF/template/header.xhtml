@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <body>
 	<section id="header">
 	<h1>
@@ -16,22 +16,31 @@ xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 			<ul>
 				<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
 						restaurante</a></li>
-				<li><a
-					href="#{request.contextPath}/restaurante/listLazy.xhtml">Consultar
+				<li><a href="#{request.contextPath}/restaurante/listLazy.xhtml">Consultar
 						restaurantes</a></li>
 				<c:if test="${isAdmin}">
-				<li><a href="#{request.contextPath}/restaurante/validarRestaurantes.xhtml">Validar
-						restaurantes</a></li>
+					<li><a
+						href="#{request.contextPath}/restaurante/validarRestaurantes.xhtml">Validar
+							restaurantes</a></li>
 				</c:if>
 			</ul></li>
 		<li class="#{estilo3}"><a
 			href="#{request.contextPath}/usuario/registro.xhtml">Registro</a></li>
-		<li><a href="#{request.contextPath}/logout">Cerrar sesión</a></li>
+
 		<li class="#{estilo4}"><a
 			href="#{request.contextPath}/noticias/infousuario.xhtml">Comunicar
 				novedades</a></li>
 		<li class="#{estilo5}"><a
 			href="#{request.contextPath}/usuario/estadisticas.xhtml">Estadisticas</a></li>
+
+		<li class="#{estilo6}"><a
+			href="#"><i class="fa fa-user-circle"/> Perfil</a>
+			<ul>
+				<li><a href="#{request.contextPath}/usuario/perfilusuario.xhtml">Perfil</a></li>
+				<li><a href="#{request.contextPath}/logout">Cerrar sesión</a></li>
+
+			</ul></li>
+
 	</ul>
 	</nav> <!-- Banner --> </section>
 	<!-- Nav -->

@@ -1,12 +1,24 @@
 <ui:composition template="/WEB-INF/template/template_privada.xhtml"
-xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core">
-    <ui:define name="title">
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:param name="menuseleccionado" value="estilo6" />
+	<ui:define name="title">
 Perfil de usuario
 </ui:define>
-    <ui:define name="content">
-        <h1>Hola #{userSessionWeb.usuario.nombre}</h1>
-    </ui:define>
+	<ui:define name="content">
+		<h1>Hola #{userSessionWeb.usuario.nombre}</h1>
+		<p:panelGrid columns="2" styleClass="perfil-usuario">
+			<h:outputText value="Nombre: " />
+			<h:outputText value="#{userSessionWeb.usuario.nombre}" />
+			<h:outputText value="Apellidos: " />
+			<h:outputText value="#{userSessionWeb.usuario.apellidos}" />
+			<h:outputText value="Tipo de cuenta: " />
+			<h:outputText value="#{userSessionWeb.usuario.tipo}" />
+			<h:outputText value="Fecha de nacimiento: " />
+			<h:outputText value="#{userSessionWeb.usuario.fechaNacimiento}" />
+		</p:panelGrid>
+	</ui:define>
 </ui:composition>

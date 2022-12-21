@@ -2,7 +2,8 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 	<ui:define name="title">
         Registro de Usuarios
     </ui:define>
@@ -36,8 +37,10 @@
 								<f:selectItem itemValue="CLIENTE" itemLabel="Cliente" />
 								<f:selectItem itemValue="RESTAURANTE"
 									itemLabel="Gestor de restaurante" />
+								<c:if test="#{userSessionWeb.isLogin() and userSessionWeb.isAdmin()}">
 								<f:selectItem itemValue="RIDER"
 									itemLabel="Rider" />
+								</c:if>
 							</h:selectOneMenu>
 						</h:panelGrid>
 						<h:messages id="errors" infoStyle="color:blue"
