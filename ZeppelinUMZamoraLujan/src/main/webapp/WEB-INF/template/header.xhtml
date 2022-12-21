@@ -14,8 +14,11 @@
 			href="#{request.contextPath}/index.xhtml">Inicio</a></li>
 		<li class="#{estilo2}"><a href="#">Gestión de restaurantes</a>
 			<ul>
-				<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
+				<c:if test="${isRestaurante or isAdmin}">
+								<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
 						restaurante</a></li>
+				</c:if>
+
 				<li><a href="#{request.contextPath}/restaurante/listLazy.xhtml">Consultar
 						restaurantes</a></li>
 				<c:if test="${isAdmin}">

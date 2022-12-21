@@ -22,6 +22,7 @@
 			<ui:param name="#{menuseleccionado}" value="current" />
 			<ui:param name="isAdmin" value="#{userSessionWeb.isLogin() and userSessionWeb.isAdmin()}"></ui:param>
 			<ui:param name="isLogin" value="#{userSessionWeb.isLogin()}"></ui:param>
+			<ui:param name="isRestaurante" value="#{userSessionWeb.isLogin() and userSessionWeb.isRestaurante()}"></ui:param>
 		</ui:include>
 
 		<section id="main">
