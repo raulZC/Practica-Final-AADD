@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,10 +13,12 @@ import javax.persistence.EntityManager;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.EntityManagerHelper;
+import aadd.persistencia.jpa.bean.CategoriaRestaurante;
 import aadd.persistencia.jpa.bean.Incidencia;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoUsuario;
 import aadd.persistencia.jpa.bean.Usuario;
+import aadd.persistencia.jpa.dao.CategoriaRestauranteDAO;
 import aadd.persistencia.jpa.dao.IncidenciaDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
@@ -43,11 +47,11 @@ class Test {
 		ServicioGestionPlataforma servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 
 		Integer rest = servicio.registrarRestaurante("Puerta de Murcia", 1, "Rio Madera", "30110", null, "Murcia",
-				38.009109654488476, -1.1339542029796663);
+				38.009109654488476, -1.1339542029796663, Arrays.asList(1));
 		Integer rest2 = servicio.registrarRestaurante("Pistatxo", 1, "Alfaro", "30001", 12, "Murcia", 37.98654993575417,
-				-1.1305437741450695);
+				-1.1305437741450695, Arrays.asList(3));
 		Integer rest3 = servicio.registrarRestaurante("El Barrilero de Jose", 1, "Marqués de Espinardo", "30100", 4,
-				"Murcia", 38.00805160364204, -1.152337749004084);
+				"Murcia", 38.00805160364204, -1.152337749004084,Arrays.asList(1,2));
 		assertTrue(rest != null);
 		assertTrue(rest2 != null);
 		assertTrue(rest3 != null);
@@ -211,5 +215,6 @@ class Test {
 		
 		
 	}
+
 
 }
