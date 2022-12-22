@@ -68,4 +68,15 @@ public abstract class ExtensionDAO<T> implements DAO<T> {
             throw re;
         }
     }
+    
+    @Override
+    public void delete(T t, EntityManager em) {
+    	
+    	try {
+    		// Si esta gestionado por el em se borra directamente si no primero se hará merge
+    		em.remove(em.contains(t) ? t : em.merge(t));
+		} catch (RuntimeException re) {
+			throw re;
+		}
+    }
 }
