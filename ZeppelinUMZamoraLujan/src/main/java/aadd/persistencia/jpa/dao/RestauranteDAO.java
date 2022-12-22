@@ -136,4 +136,20 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
             throw re;
         }
     }
+    
+    public List<RestauranteDTO> findByUser(Integer id){
+    	 try {
+             String queryString = " SELECT r FROM Restaurante r WHERE r.responsable.id = :id" ;
+             
+             Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
+             query.setParameter("id",id);
+             query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+             return transformarToDTO(query.getResultList());
+         } catch (RuntimeException re) {
+             throw re;
+         }
+    	
+	
+    	
+    }
 }

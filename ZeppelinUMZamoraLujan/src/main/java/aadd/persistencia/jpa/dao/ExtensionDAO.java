@@ -31,9 +31,22 @@ public abstract class ExtensionDAO<T> implements DAO<T> {
         }
     }   
     @Override
-    public List<T> findByIds(List<Integer> id) {
-        return null;
-        // TODO Auto-generated method stub
+    public List<T> findByIds(List<Integer> ids) {
+        try {
+
+        	
+        	final String queryString = "SELECT e FROM " + name + " e WHERE e.id IN :ids";
+            Query query = EntityManagerHelper.getEntityManager().createQuery(queryString);
+            query.setParameter("ids", ids);
+            query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+            return query.getResultList();
+        	
+        }catch (RuntimeException re) {
+			throw re;
+		}
+    	
+    	
+    	
     }
     @Override
     public void save(T t, EntityManager em) {

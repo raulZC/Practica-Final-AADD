@@ -21,8 +21,12 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 @ViewScoped
 public class RestaurantesNoValidadosList implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3119216022261642604L;
 	@Inject
 	private FacesContext facesContext;
 	@Inject
@@ -115,9 +119,7 @@ public class RestaurantesNoValidadosList implements Serializable {
 		this.userSeleccionado = userSeleccionado;
 	}
 
-	public RestaurantesNoValidadosList() {
-		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-	}
+
 
 	public UserSessionWeb getUserSessionWeb() {
 		return userSessionWeb;
