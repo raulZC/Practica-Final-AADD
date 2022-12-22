@@ -104,7 +104,7 @@ public class ServicioGestionPlataforma {
 	}
 
 	public Integer registrarRestaurante(String nombre, Integer responsable, String calle, String codigoPostal,
-			Integer numero, String ciudad, Double latitud, Double longitud) {
+			Integer numero, String ciudad, Double latitud, Double longitud, List<Integer> categorias) {
 
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
@@ -117,8 +117,23 @@ public class ServicioGestionPlataforma {
 			r.setValoracionGlobal(0d);
 			r.setNumPenalizaciones(0);
 			r.setNumValoraciones(0);
-
+			
+			if(categorias!=null) {
+				for (Integer integer : categorias) {
+					System.out.println(integer +" id categoria");
+				}
+				List<CategoriaRestaurante> catePersis = CategoriaRestauranteDAO.getCategoriaRestauranteDAO().findByIds(categorias);
+				r.setCategorias(catePersis);
+				for (CategoriaRestaurante categoriaRestaurante : catePersis) {
+					categoriaRestaurante.getRestaurantes().add(r);
+				}
+			
+			}
+			
+			
+			
 			RestauranteDAO.getRestauranteDAO().save(r, em);
+			
 			// Código nuevo
 			em.flush();
 			Direccion d = new Direccion();
@@ -406,6 +421,14 @@ public class ServicioGestionPlataforma {
 		
 		return UsuarioDAO.getUsuarioDAO().findRestaurantesNoValidados();
 	}
+	
+	public List<CategoriaRestaurante> getAllCategoriasRest(){
+		
+		return CategoriaRestauranteDAO.getCategoriaRestauranteDAO().getAll();
+	}
 
+	public List<RestauranteDTO> getRestaurantesByUser(Integer id){
+		return RestauranteDAO.getRestauranteDAO().findByUser(id);
+	}
 
 }

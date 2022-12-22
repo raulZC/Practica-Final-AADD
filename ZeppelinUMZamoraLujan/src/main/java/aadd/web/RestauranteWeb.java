@@ -3,6 +3,8 @@ package aadd.web;
 import java.io.IOException;
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -17,6 +19,13 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
+import com.mongodb.client.model.geojson.Point;
+
+import aadd.persistencia.dto.RestauranteDTO;
+import aadd.persistencia.jpa.bean.CategoriaRestaurante;
+import aadd.persistencia.jpa.dao.RestauranteDAO;
+import aadd.persistencia.mongo.bean.Direccion;
+import aadd.persistencia.mongo.dao.DireccionDAO;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPlataforma;
 
@@ -33,6 +42,8 @@ public class RestauranteWeb implements Serializable {
 	private String codigoPostal;
 	private Integer numero;
 	private String ciudad;
+	private List<CategoriaRestaurante> categoriasDisp;
+	private List<Integer> categoriasSelec;
 	private MapModel<Integer> simpleModel;
 	@Inject
 	private FacesContext facesContext;
@@ -49,6 +60,19 @@ public class RestauranteWeb implements Serializable {
 	@PostConstruct
 	public void obtenerUsuarioSesion() {
 		responsableId = usuarioSesion.getUsuario().getId();
+		categoriasDisp = servicio.getAllCategoriasRest();
+		
+		List<RestauranteDTO> restaurantes = RestauranteDAO.getRestauranteDAO().findByUser(responsableId);
+		// Añadimos las marcas de todos los restaurantes del usuario
+		for (RestauranteDTO rest : restaurantes) {
+			
+			Point point = DireccionDAO.getDireccionDAO().findByRestaurante(rest.getId()).getCoordenadas();
+			
+			double longitud = point.getCoordinates().getValues().get(0); // primer elemento de la lista de coordenadas es la longitud
+			double latitud = point.getCoordinates().getValues().get(1);// segundo elemento de la lista de coordenadas es la latitud
+			simpleModel.addOverlay(new Marker<Integer>(new LatLng(latitud, longitud), rest.getNombre(), rest.getId()));
+		}
+		
 	}
 
 	public void onPointSelect(PointSelectEvent event) {
@@ -71,7 +95,7 @@ public class RestauranteWeb implements Serializable {
 
 	public void crearRestaurante() {
 		Integer restauranteId = servicio.registrarRestaurante(nombreRestaurante, responsableId, calle, codigoPostal,
-				numero, ciudad, latitudSelected, longitudSelected);
+				numero, ciudad, latitudSelected, longitudSelected,categoriasSelec);
 
 		if (restauranteId == null) {
 			facesContext.addMessage(null,
@@ -164,6 +188,24 @@ public class RestauranteWeb implements Serializable {
 
 	public void setResponsableId(Integer responsableId) {
 		this.responsableId = responsableId;
+	}
+
+
+
+	public List<Integer> getCategoriasSelec() {
+		return categoriasSelec;
+	}
+
+	public void setCategoriasSelec(List<Integer> categoriasSelec) {
+		this.categoriasSelec = categoriasSelec;
+	}
+
+	public List<CategoriaRestaurante> getCategoriasDisp() {
+		return categoriasDisp;
+	}
+
+	public void setCategoriasDisp(List<CategoriaRestaurante> categoriasDisp) {
+		this.categoriasDisp = categoriasDisp;
 	}
 
 	
