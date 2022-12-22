@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	template="/WEB-INF/template/template_privada.xhtml">
+	<ui:define name="title">
+Mis restaurantes
+</ui:define>
+	<ui:param name="menuseleccionado" value="estilo2" />
+	<ui:define name="content">
+		<c:choose>
+
+			<c:when
+				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin())}">
+				<h:form id="restaurantes">
+					<div style="margin-top: 10px; margin-bottom: 10px;">
+						<h:panelGroup id="panelBuscador">
+							<p:fieldset legend="Buscador" collapsed="false" toggleable="true">
+								<div class="ui-g ui-fluid">
+									<div class="ui-g-2">Palabra clave:</div>
+									<div class="ui-g-10">
+										<p:inputText value="#{misRest.keyword}" />
+									</div>
+								</div>
+								<div style="text-align: center;">
+									<p:commandButton value="Buscar"
+										actionListener="#{misRest.buscar()}" update="dt_misRest"
+										icon="fa fa-search" />
+								</div>
+								<div style="margin: auto; text-align: center;">
+									<p:ajaxStatus>
+										<f:facet name="start">
+											<i class="pi pi-spin pi-spinner loading-icon"
+												aria-hidden="true"></i>
+										</f:facet>
+										<f:facet name="complete">
+											<h:outputText value="" />
+										</f:facet>
+									</p:ajaxStatus>
+								</div>
+							</p:fieldset>
+						</h:panelGroup>
+					</div>
+
+					<p:dataTable var="restaurante" style="prueba" id="dt_misRest"
+						value="#{misRest.misRestaurantes}" rows="5"
+						emptyMessage="No se han encontrado restaurantes" paginator="true"
+						rowsPerPageTemplate="5,10,{ShowAll|'Todos'}"
+						rowKey="#{restaurante.id}" rowHover="true" selectionMode="single"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} restaurantes">
+
+						<p:column headerText="ID">
+							<h:outputLabel>#{restaurante.id}</h:outputLabel>
+						</p:column>
+						<p:column headerText="Nombre">
+							<h:outputLabel>#{restaurante.nombre}</h:outputLabel>
+						</p:column>
+						<p:column>
+							<p:commandButton icon="pi pi-pencil"
+								styleClass="edit-button rounded-button ui-button-success"
+								process="@this" action="#{misRest.clickOnEdit()}">
+								<f:setPropertyActionListener value="#{restaurante}"
+									target="#{misRest.restauranteSelec}" />
+						
+							</p:commandButton>
+
+
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+
+
+
+
+
+			</c:when>
+			<c:otherwise>
+				<div
+					style="text-align: center; font-size: larger; font-weight: bolder;">
+					Lo sentimos, solo los usuarios del tipo restaurante tienen acceso a
+					esta página.</div>
+			</c:otherwise>
+		</c:choose>
+	</ui:define>
+</ui:composition>

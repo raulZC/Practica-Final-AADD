@@ -26,6 +26,10 @@
 						href="#{request.contextPath}/restaurante/validarRestaurantes.xhtml">Validar
 							restaurantes</a></li>
 				</c:if>
+				<c:if test="${isRestaurante or isAdmin}"> <!-- Ver si dejar admin o solo restaurante -->
+								<li><a href="#{request.contextPath}/restaurante/misRestaurantes.xhtml">Mis
+						restaurantes</a></li>
+				</c:if>
 			</ul></li>
 		<c:if test="${not isLogin or isAdmin}">
 
