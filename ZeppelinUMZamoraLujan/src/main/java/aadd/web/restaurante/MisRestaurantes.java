@@ -1,19 +1,17 @@
 package aadd.web.restaurante;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.event.map.OverlaySelectEvent;
-import org.primefaces.model.map.Marker;
-
+import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPlataforma;
@@ -32,6 +30,11 @@ public class MisRestaurantes implements Serializable {
 	protected UserSessionWeb userSessionWeb;
 	private ServicioGestionPlataforma servicio;
 	private List<RestauranteDTO> misRestaurantes;
+	private List<PlatoDTO> menu;
+	private PlatoDTO platoSelect;
+	private String titulo;
+	private String descripcion;
+	private Double precio;
 	private RestauranteDTO restauranteSelec;
 
 	public FacesContext getFacesContext() {
@@ -91,12 +94,53 @@ public class MisRestaurantes implements Serializable {
 
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
+	public List<PlatoDTO> getMenu() {
+		return menu;
+	}
+
+	public void setMenu(List<PlatoDTO> menu) {
+		this.menu = menu;
+	}
+
+	public PlatoDTO getPlatoSelect() {
+		return platoSelect;
+	}
+
+	public void setPlatoSelect(PlatoDTO platoSelect) {
+		this.platoSelect = platoSelect;
+	}
+
 	public void buscar() {
 
 		if (!keyword.isBlank()) {
 
-			misRestaurantes = misRestaurantes.stream().filter(
-					rest -> rest.getNombre().toLowerCase().contains(keyword.toLowerCase()) || Integer.toString(rest.getId()).contains(keyword))
+			misRestaurantes = misRestaurantes.stream()
+					.filter(rest -> rest.getNombre().toLowerCase().contains(keyword.toLowerCase())
+							|| Integer.toString(rest.getId()).contains(keyword))
 					.collect(Collectors.toList());
 
 		} else {
@@ -105,15 +149,43 @@ public class MisRestaurantes implements Serializable {
 
 	}
 
-	public void clickOnEdit() {
+	public void loadMenu() {
+		menu = servicio.getMenuByRestaurante(restauranteSelec.getId());
+	}
 
-		try {
-			String contextoURL = facesContext.getExternalContext().getApplicationContextPath();
-			facesContext.getExternalContext()
-					.redirect(contextoURL + "/restaurante/formPlatos.xhtml?id=" + restauranteSelec.getId());
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void clickOnShowMenu() {
+
+		loadMenu();
+
+	}
+
+	public void crearPlato() {
+
+		if (restauranteSelec != null) {
+
+			boolean exito = servicio.nuevoPlato(titulo, descripcion, precio, restauranteSelec.getId());
+			if (exito) {
+				facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plato creado", ""));
+				loadMenu();
+			}
 		}
 	}
 
+	public void eliminarPlato() {
+
+		if (platoSelect != null) {
+			
+			if (servicio.eliminarPlato(platoSelect.getId())) {
+
+				facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plato eliminado", ""));
+				loadMenu();
+			}
+			
+			
+		} else {
+			facesContext.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al intentar eliminar el plato", ""));
+			
+		}
+	}
 }

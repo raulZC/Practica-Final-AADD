@@ -430,5 +430,27 @@ public class ServicioGestionPlataforma {
 	public List<RestauranteDTO> getRestaurantesByUser(Integer id){
 		return RestauranteDAO.getRestauranteDAO().findByUser(id);
 	}
+	
+	public boolean eliminarPlato(Integer idPlato) {
+	    EntityManager em = EntityManagerHelper.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+
+	        Plato plato = PlatoDAO.getPlatoDAO().findById(idPlato);
+	        PlatoDAO.getPlatoDAO().delete(plato, em);
+
+	        em.getTransaction().commit();
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        em.close();
+	    }
+	}
+
 
 }

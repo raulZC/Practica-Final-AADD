@@ -11,7 +11,6 @@ Mis restaurantes
 	<ui:param name="menuseleccionado" value="estilo2" />
 	<ui:define name="content">
 		<c:choose>
-
 			<c:when
 				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin())}">
 				<h:form id="restaurantes">
@@ -44,36 +43,112 @@ Mis restaurantes
 						</h:panelGroup>
 					</div>
 
-					<p:dataTable var="restaurante" style="prueba" id="dt_misRest"
-						value="#{misRest.misRestaurantes}" rows="5"
-						emptyMessage="No se han encontrado restaurantes" paginator="true"
-						rowsPerPageTemplate="5,10,{ShowAll|'Todos'}"
-						rowKey="#{restaurante.id}" rowHover="true" selectionMode="single"
-						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-						currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} restaurantes">
+					<h:panelGrid columns="2">
+						<h:panelGroup>
+							<p:dataTable var="restaurante" style="min-width: 25rem"
+								id="dt_misRest" value="#{misRest.misRestaurantes}" rows="5"
+								scrollHeight="50rem"
+								emptyMessage="No se han encontrado restaurantes"
+								paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'Todos'}"
+								rowKey="#{restaurante.id}" rowHover="true"
+								selectionMode="single"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} restaurantes">
 
-						<p:column headerText="ID">
-							<h:outputLabel>#{restaurante.id}</h:outputLabel>
-						</p:column>
-						<p:column headerText="Nombre">
-							<h:outputLabel>#{restaurante.nombre}</h:outputLabel>
-						</p:column>
-						<p:column>
-							<p:commandButton icon="pi pi-pencil"
-								styleClass="edit-button rounded-button ui-button-success"
-								process="@this" action="#{misRest.clickOnEdit()}">
-								<f:setPropertyActionListener value="#{restaurante}"
-									target="#{misRest.restauranteSelec}" />
-						
-							</p:commandButton>
+								<p:column headerText="ID">
+									<h:outputLabel>#{restaurante.id}</h:outputLabel>
+								</p:column>
+								<p:column headerText="Nombre">
+									<h:outputLabel>#{restaurante.nombre}</h:outputLabel>
+								</p:column>
+
+								<p:column>
+									<p:commandButton icon="fa fa-utensils" value="Ver"
+										styleClass="edit-button rounded-button ui-button-success"
+										process="@this" action="#{misRest.clickOnShowMenu()}"
+										update="restaurantes:panelG_menu">
+										<f:setPropertyActionListener value="#{restaurante}"
+											target="#{misRest.restauranteSelec}" />
+
+									</p:commandButton>
 
 
-						</p:column>
+								</p:column>
 
-					</p:dataTable>
+							</p:dataTable>
+
+						</h:panelGroup>
+						<h:panelGroup id="panelG_menu">
+							<p:dataTable var="plato" style="min-width: 17rem"
+								value="#{misRest.menu}" rows="10" id="dt_menu" scrollable="true"
+								scrollHeight="250" emptyMessage="No se han encontrado platos">
+								<p:column headerText="Título">
+									<h:outputText value="#{plato.titulo}" />
+								</p:column>
+								<p:column headerText="Precio">
+									<h:outputText value="#{plato.precio}" />
+								</p:column>
+								<p:column headerText="Disp.">
+									A
+								</p:column>
+								<p:column headerText="Acciones">
+									<p:commandButton class="ui-button-danger rounded-button"
+										icon="pi pi-trash" process="@this"
+										oncomplete="PF('borrarPlato').show()" update="eliminar_plato:dialogoConfirmacionEliminarPlato">
+										<f:setPropertyActionListener value="#{plato}"
+											target="#{misRest.platoSelect}" />
+									</p:commandButton>
+								</p:column>
+
+							</p:dataTable>
+							<p:commandButton id="btn_cp"
+								disabled="#{misRest.restauranteSelec==null}"
+								value="Dar plato de alta" icon="fa fa-bowl-food"
+								oncomplete="PF('nuevoPlato').show()" update="crear_plato:nuevo"></p:commandButton>
+
+						</h:panelGroup>
+					</h:panelGrid>
 				</h:form>
+				<h:form id="crear_plato">
+					<p:dialog header="Dar de alta plato" modal="true"
+						widgetVar="nuevoPlato" width="500">
+						<p:outputPanel id="nuevo" style="margin: 10px;">
+							<h:panelGrid columns="2">
+								<h:outputText value="Título" />
+								<h:inputText value="#{misRest.titulo}" required="true" />
+								<h:outputText value="Descripción" />
+								<h:inputTextarea value="#{misRest.descripcion}" rows="5"
+									required="true" />
+								<h:outputText value="Precio" />
+								<p:inputNumber value="#{misRest.precio}" decimalPlaces="2"
+									required="true" />
+								<p:commandButton value="Cerrar"
+									onclick="PF('nuevoPlato').hide();" />
+								<p:commandButton value="Crear plato" icon="fa fa-bowl-food"
+									actionListener="#{misRest.crearPlato()}"
+									oncomplete="PF('nuevoPlato').hide();"
+									update="restaurantes:dt_menu" />
+							</h:panelGrid>
 
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+				<h:form id="eliminar_plato">
+					<p:confirmDialog id="dialogoConfirmacionEliminarPlato"
+						widgetVar="borrarPlato" showEffect="fade" width="400"
+						message="¿Seguro que quiere eliminar este plato?"
+						header="Confirmar" severity="warn">
+					
+						<p:commandButton value="Si" icon="pi pi-check"
+							disabled="#{false}"
+							actionListener="#{misRest.eliminarPlato()}"
+							oncomplete="PF('borrarPlato').hide()" update="restaurantes:dt_menu"/>
 
+						<p:commandButton value="No" type="button"
+							styleClass="ui-button-secondary" icon="pi pi-times"
+							onclick="PF('borrarPlato').hide()" />
+					</p:confirmDialog>
+				</h:form>
 
 
 
