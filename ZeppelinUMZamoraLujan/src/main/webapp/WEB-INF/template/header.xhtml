@@ -12,7 +12,7 @@
 	<ul>
 		<li class="#{estilo1}"><a
 			href="#{request.contextPath}/index.xhtml">Inicio</a></li>
-		<li class="#{estilo2}"><a href="#">Gestión de restaurantes</a>
+		<li class="#{estilo2}"><a href="#">Gestiï¿½n de restaurantes</a>
 			<ul>
 				<c:if test="${isRestaurante or isAdmin}">
 					<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
@@ -42,6 +42,10 @@
 				href="#{request.contextPath}/noticias/infousuario.xhtml">Comunicar
 					novedades</a></li>
 		</c:if>
+		<c:if test="${isAdmin}">
+			<li class="#{estilo7}"><a
+				href="#{request.contextPath}/restaurante/formCategorias.xhtml">Editar categorías</a></li>
+		</c:if>
 		<li class="#{estilo5}"><a
 			href="#{request.contextPath}/usuario/estadisticas.xhtml">Estadisticas</a></li>
 
@@ -50,7 +54,7 @@
 			<ul>
 				<li><a
 					href="#{request.contextPath}/usuario/perfilusuario.xhtml">Perfil</a></li>
-				<li><a href="#{request.contextPath}/logout">Cerrar sesión</a></li>
+				<li><a href="#{request.contextPath}/logout">Cerrar sesiï¿½n</a></li>
 
 			</ul></li>
 

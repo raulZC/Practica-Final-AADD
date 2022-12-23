@@ -29,6 +29,7 @@ public class MisRestaurantes implements Serializable {
 	@Inject
 	protected UserSessionWeb userSessionWeb;
 	private ServicioGestionPlataforma servicio;
+	private String keyword;
 	private List<RestauranteDTO> misRestaurantes;
 	private List<PlatoDTO> menu;
 	private PlatoDTO platoSelect;
@@ -92,8 +93,6 @@ public class MisRestaurantes implements Serializable {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-
-	private String keyword;
 
 
 	public String getTitulo() {

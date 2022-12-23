@@ -455,6 +455,6 @@ public class ServicioGestionPlataforma {
 	        em.close();
 	    }
 	}
-
+	
 
 }
