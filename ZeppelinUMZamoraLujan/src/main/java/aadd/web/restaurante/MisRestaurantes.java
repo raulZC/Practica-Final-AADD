@@ -150,7 +150,7 @@ public class MisRestaurantes implements Serializable {
 	}
 
 	public void loadMenu() {
-		menu = servicio.getMenuByRestaurante(restauranteSelec.getId());
+		menu = servicio.getAllMenuByRestaurante(restauranteSelec.getId());
 	}
 
 	public void clickOnShowMenu() {

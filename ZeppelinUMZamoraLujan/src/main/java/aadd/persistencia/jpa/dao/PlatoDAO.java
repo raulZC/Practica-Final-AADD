@@ -31,6 +31,17 @@ public class PlatoDAO extends ExtensionDAO<Plato> {
             throw re;
         }
     }
+    
+    public List<PlatoDTO> findAllplatosByRestaurante(Integer restaurante) {
+        try {
+            Query query = EntityManagerHelper.getEntityManager().createNamedQuery("Plato.findAllPlatosByRestaurante");
+            query.setParameter("restaurante", restaurante);
+            return transformarToDTO(query.getResultList());
+        } catch (RuntimeException re) {
+            throw re;
+        }
+    }
+    
 
     public List<PlatoDTO> transformarToDTO(List<Plato> platos) {
         List<PlatoDTO> menu = new ArrayList<PlatoDTO>();
