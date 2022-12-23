@@ -15,8 +15,8 @@
 		<li class="#{estilo2}"><a href="#">Gestión de restaurantes</a>
 			<ul>
 				<c:if test="${isRestaurante or isAdmin}">
-								<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
-						restaurante</a></li>
+					<li><a href="#{request.contextPath}/restaurante/form.xhtml">Crear
+							restaurante</a></li>
 				</c:if>
 
 				<li><a href="#{request.contextPath}/restaurante/listLazy.xhtml">Consultar
@@ -26,26 +26,30 @@
 						href="#{request.contextPath}/restaurante/validarRestaurantes.xhtml">Validar
 							restaurantes</a></li>
 				</c:if>
-				<c:if test="${isRestaurante or isAdmin}"> <!-- Ver si dejar admin o solo restaurante -->
-								<li><a href="#{request.contextPath}/restaurante/misRestaurantes.xhtml">Mis
-						restaurantes</a></li>
+				<c:if test="${isRestaurante or isAdmin}">
+					<!-- Ver si dejar admin o solo restaurante -->
+					<li><a
+						href="#{request.contextPath}/restaurante/misRestaurantes.xhtml">Mis
+							restaurantes</a></li>
 				</c:if>
 			</ul></li>
 		<c:if test="${not isLogin or isAdmin}">
-
-		<li class="#{estilo3}"><a
-			href="#{request.contextPath}/usuario/registro.xhtml">Registro</a></li>
+			<li class="#{estilo3}"><a
+				href="#{request.contextPath}/usuario/registro.xhtml">Registro</a></li>
 		</c:if>
-		<li class="#{estilo4}"><a
-			href="#{request.contextPath}/noticias/infousuario.xhtml">Comunicar
-				novedades</a></li>
+		<c:if test="${isAdmin}">
+			<li class="#{estilo4}"><a
+				href="#{request.contextPath}/noticias/infousuario.xhtml">Comunicar
+					novedades</a></li>
+		</c:if>
 		<li class="#{estilo5}"><a
 			href="#{request.contextPath}/usuario/estadisticas.xhtml">Estadisticas</a></li>
 
-		<li class="#{estilo6}"><a
-			href="#"><i class="fa fa-user-circle"/> Perfil</a>
+		<li class="#{estilo6}"><a href="#"><i
+				class="fa fa-user-circle" /> Perfil</a>
 			<ul>
-				<li><a href="#{request.contextPath}/usuario/perfilusuario.xhtml">Perfil</a></li>
+				<li><a
+					href="#{request.contextPath}/usuario/perfilusuario.xhtml">Perfil</a></li>
 				<li><a href="#{request.contextPath}/logout">Cerrar sesión</a></li>
 
 			</ul></li>
