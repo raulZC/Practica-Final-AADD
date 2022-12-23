@@ -32,9 +32,11 @@ public class MisRestaurantes implements Serializable {
 	private List<RestauranteDTO> misRestaurantes;
 	private List<PlatoDTO> menu;
 	private PlatoDTO platoSelect;
+	private Integer id;
 	private String titulo;
 	private String descripcion;
 	private Double precio;
+	private boolean disponibilidad;
 	private RestauranteDTO restauranteSelec;
 
 	public FacesContext getFacesContext() {
@@ -134,6 +136,22 @@ public class MisRestaurantes implements Serializable {
 		this.platoSelect = platoSelect;
 	}
 
+	public boolean isDisponibilidad() {
+		return disponibilidad;
+	}
+
+	public void setDisponibilidad(boolean disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public void buscar() {
 
 		if (!keyword.isBlank()) {
@@ -187,5 +205,33 @@ public class MisRestaurantes implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al intentar eliminar el plato", ""));
 			
 		}
+	}
+	
+	
+	public void selectPlatoEdit() {
+		
+		if(platoSelect!=null) {
+			
+			id=platoSelect.getId();
+			titulo = platoSelect.getTitulo();
+			descripcion= platoSelect.getDescripcion();
+			precio=platoSelect.getPrecio();
+			disponibilidad=platoSelect.isDisponibilidad();
+			System.out.println(id+" "+titulo);
+		}
+		
+		
+	}
+	
+	public void updatePlato() {
+		
+		if(disponibilidad!=platoSelect.isDisponibilidad()) {
+			
+			servicio.cambiarDispPlato(platoSelect.getId(), disponibilidad);
+			loadMenu();
+		}
+		
+		
+		
 	}
 }

@@ -51,7 +51,7 @@ Mis restaurantes
 								emptyMessage="No se han encontrado restaurantes"
 								paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'Todos'}"
 								rowKey="#{restaurante.id}" rowHover="true"
-								selectionMode="single"
+								
 								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} restaurantes">
 
@@ -80,8 +80,8 @@ Mis restaurantes
 						</h:panelGroup>
 						<h:panelGroup id="panelG_menu">
 							<p:dataTable var="plato" style="min-width: 17rem"
-								value="#{misRest.menu}" rows="10" id="dt_menu" scrollable="true"
-								scrollHeight="250" emptyMessage="No se han encontrado platos">
+								value="#{misRest.menu}"  id="dt_menu" scrollable="true"
+								scrollHeight="500" emptyMessage="No se han encontrado platos">
 								<p:column headerText="Título">
 									<h:outputText value="#{plato.titulo}" />
 								</p:column>
@@ -89,18 +89,29 @@ Mis restaurantes
 									<h:outputText value="#{plato.precio} €" />
 								</p:column>
 								<p:column headerText="Disp.">
-									
-										<ui:fragment rendered="#{plato.disponibilidad}">
-											<i class="pi pi-check" style="font-size: 1.5rem;font-weight: bolder; color: green;border: 1px solid black;border-radius: 50%;padding: 0.25rem"/>
-										</ui:fragment>
-										
-										<ui:fragment rendered="#{!plato.disponibilidad}">
-											<i class="pi pi-times" style="font-size: 1.5rem; font-weight: bolder;color: red;border: 1px solid black;border-radius: 50%;padding: 0.25rem" />
-										</ui:fragment>
-									
+
+									<ui:fragment rendered="#{plato.disponibilidad}">
+										<i class="pi pi-check"
+											style="font-size: 1.5rem; font-weight: bolder; color: green; border: 1px solid black; border-radius: 50%; padding: 0.25rem" />
+									</ui:fragment>
+
+									<ui:fragment rendered="#{!plato.disponibilidad}">
+										<i class="pi pi-times"
+											style="font-size: 1.5rem; font-weight: bolder; color: red; border: 1px solid black; border-radius: 50%; padding: 0.25rem" />
+									</ui:fragment>
+
 								</p:column>
 								<p:column headerText="Acciones">
-									<p:commandButton class="ui-button-danger rounded-button"
+
+									<p:commandButton style="margin:0.5rem" icon="pi pi-pencil" update="editar_plato"
+										oncomplete="PF('editarPlatoDialog').show()"
+										styleClass="edit-button rounded-button ui-button-success"
+										action="#{misRest.selectPlatoEdit()}" process="@this">
+										<f:setPropertyActionListener value="#{plato}"
+											target="#{misRest.platoSelect}" />
+									</p:commandButton>
+
+									<p:commandButton style="margin:0.5rem" class="ui-button-danger rounded-button"
 										icon="pi pi-trash" process="@this"
 										oncomplete="PF('borrarPlato').show()"
 										update="eliminar_plato:dialogoConfirmacionEliminarPlato">
@@ -157,6 +168,46 @@ Mis restaurantes
 							styleClass="ui-button-secondary" icon="pi pi-times"
 							onclick="PF('borrarPlato').hide()" />
 					</p:confirmDialog>
+				</h:form>
+				<h:form id="editar_plato">
+					<p:dialog id="dialogoEditarPlato" header="Editar plato"
+						widgetVar="editarPlatoDialog" modal="true" width="600">
+						<p:outputPanel id="platoEdit" style="margin: 10px;">
+							<p:panelGrid columns="2">
+								<h:outputText value="ID" />
+								<h:outputText value="#{misRest.id}" />
+								<h:outputText value="Título:" />
+								<h:outputText value="#{misRest.titulo}" />
+								<h:outputText value="Descripción:" />
+								<h:outputText value="#{misRest.descripcion}" rows="5" />
+								<h:outputText value="Precio:" />
+								<h:outputText value="#{misRest.precio} €" />
+								<h:outputText value="Disponible:" />
+
+								<p:outputPanel
+									style="display: flex; justify-content: center; align-items: center;">
+
+									<i class="pi pi-times"
+										style="font-size: 1.5rem; font-weight: bolder; color: red; margin-right: 1rem" />
+									<p:toggleSwitch value="#{misRest.disponibilidad}" />
+									<i class="pi pi-check"
+										style="font-size: 1.5rem; font-weight: bolder; color: green; margin-left: 1rem" />
+
+								</p:outputPanel>
+
+
+
+
+
+							</p:panelGrid>
+
+						</p:outputPanel>
+						<p:commandButton disabled="#{misRest.platoSelect==null}"
+							value="Guardar" action="#{misRest.updatePlato()}"
+							update="restaurantes:dt_menu"
+							oncomplete="PF('editarPlatoDialog').hide()" />
+
+					</p:dialog>
 				</h:form>
 
 
