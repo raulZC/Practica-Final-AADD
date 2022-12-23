@@ -33,7 +33,7 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
     public List<IncidenciaDTO> transformarToDTO(List<Incidencia> incidencias) {
         List<IncidenciaDTO> inc = new ArrayList<IncidenciaDTO>();
         for (Incidencia i : incidencias) {
-        	inc.add(new IncidenciaDTO(i.getId(), i.getFechaCreacion(), i.getDescripcion(), i.getFechaCierre(), i.getComentarioCierre()));
+        	inc.add(new IncidenciaDTO(i.getId(), i.getFechaCreacion(), i.getDescripcion(), i.getFechaCierre(), i.getComentarioCierre(),i.getUsuario()));
         }
         return inc;
     }

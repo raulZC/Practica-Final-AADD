@@ -3,6 +3,8 @@ package aadd.persistencia.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import aadd.persistencia.jpa.bean.Usuario;
+
 public class IncidenciaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -11,16 +13,20 @@ public class IncidenciaDTO implements Serializable {
 	protected String descripcion;
 	protected LocalDate fechaCierre;
 	protected String comentarioCierre;
+	protected Usuario usuario;
 	
 	public IncidenciaDTO(Integer id, LocalDate fechaCreacion, String descripcion, LocalDate fechaCierre,
-			String comentarioCierre) {
+			String comentarioCierre,Usuario usuario) {
 		super();
 		this.id = id;
 		this.fechaCreacion = fechaCreacion;
 		this.descripcion = descripcion;
 		this.fechaCierre = fechaCierre;
 		this.comentarioCierre = comentarioCierre;
+		this.usuario = usuario;
 	}
+
+	
 
 	public Integer getId() {
 		return id;
@@ -62,6 +68,13 @@ public class IncidenciaDTO implements Serializable {
 		this.comentarioCierre = comentarioCierre;
 	}
 	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 
 }
