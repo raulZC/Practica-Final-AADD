@@ -35,7 +35,7 @@ public class PlatoDAO extends ExtensionDAO<Plato> {
     public List<PlatoDTO> transformarToDTO(List<Plato> platos) {
         List<PlatoDTO> menu = new ArrayList<PlatoDTO>();
         for (Plato p : platos) {
-            menu.add(new PlatoDTO(p.getId(), p.getDescripcion(), p.getTitulo(), p.getPrecio()));
+            menu.add(new PlatoDTO(p.getId(), p.getDescripcion(), p.getTitulo(), p.getPrecio(),p.isDisponibilidad()));
         }
         return menu;
     }

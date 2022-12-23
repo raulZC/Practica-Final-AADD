@@ -86,15 +86,24 @@ Mis restaurantes
 									<h:outputText value="#{plato.titulo}" />
 								</p:column>
 								<p:column headerText="Precio">
-									<h:outputText value="#{plato.precio}" />
+									<h:outputText value="#{plato.precio} €" />
 								</p:column>
 								<p:column headerText="Disp.">
-									A
+									
+										<ui:fragment rendered="#{plato.disponibilidad}">
+											<i class="pi pi-check" style="font-size: 1.5rem;font-weight: bolder; color: green;border: 1px solid black;border-radius: 50%;padding: 0.25rem"/>
+										</ui:fragment>
+										
+										<ui:fragment rendered="#{!plato.disponibilidad}">
+											<i class="pi pi-times" style="font-size: 1.5rem; font-weight: bolder;color: red;border: 1px solid black;border-radius: 50%;padding: 0.25rem" />
+										</ui:fragment>
+									
 								</p:column>
 								<p:column headerText="Acciones">
 									<p:commandButton class="ui-button-danger rounded-button"
 										icon="pi pi-trash" process="@this"
-										oncomplete="PF('borrarPlato').show()" update="eliminar_plato:dialogoConfirmacionEliminarPlato">
+										oncomplete="PF('borrarPlato').show()"
+										update="eliminar_plato:dialogoConfirmacionEliminarPlato">
 										<f:setPropertyActionListener value="#{plato}"
 											target="#{misRest.platoSelect}" />
 									</p:commandButton>
@@ -138,11 +147,11 @@ Mis restaurantes
 						widgetVar="borrarPlato" showEffect="fade" width="400"
 						message="¿Seguro que quiere eliminar este plato?"
 						header="Confirmar" severity="warn">
-					
-						<p:commandButton value="Si" icon="pi pi-check"
-							disabled="#{false}"
+
+						<p:commandButton value="Si" icon="pi pi-check" disabled="#{false}"
 							actionListener="#{misRest.eliminarPlato()}"
-							oncomplete="PF('borrarPlato').hide()" update="restaurantes:dt_menu"/>
+							oncomplete="PF('borrarPlato').hide()"
+							update="restaurantes:dt_menu" />
 
 						<p:commandButton value="No" type="button"
 							styleClass="ui-button-secondary" icon="pi pi-times"
