@@ -39,6 +39,12 @@ public class MisRestaurantes implements Serializable {
 	private boolean disponibilidad;
 	private RestauranteDTO restauranteSelec;
 
+	@PostConstruct
+	public void init() {
+		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
+		misRestaurantes = servicio.getRestaurantesByUser(userSessionWeb.getUsuario().getId());
+		
+	}
 	public FacesContext getFacesContext() {
 		return facesContext;
 	}
@@ -89,12 +95,6 @@ public class MisRestaurantes implements Serializable {
 
 	private String keyword;
 
-	@PostConstruct
-	public void init() {
-		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
-		misRestaurantes = servicio.getRestaurantesByUser(userSessionWeb.getUsuario().getId());
-
-	}
 
 	public String getTitulo() {
 		return titulo;

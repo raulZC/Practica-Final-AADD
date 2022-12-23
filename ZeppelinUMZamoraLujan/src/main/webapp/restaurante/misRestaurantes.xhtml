@@ -12,7 +12,7 @@ Mis restaurantes
 	<ui:define name="content">
 		<c:choose>
 			<c:when
-				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin())}">
+				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin()) and userSessionWeb.getUsuario().isValidado() }">
 				<h:form id="restaurantes">
 					<div style="margin-top: 10px; margin-bottom: 10px;">
 						<h:panelGroup id="panelBuscador">
@@ -51,7 +51,6 @@ Mis restaurantes
 								emptyMessage="No se han encontrado restaurantes"
 								paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'Todos'}"
 								rowKey="#{restaurante.id}" rowHover="true"
-								
 								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 								currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} restaurantes">
 
@@ -80,7 +79,7 @@ Mis restaurantes
 						</h:panelGroup>
 						<h:panelGroup id="panelG_menu">
 							<p:dataTable var="plato" style="min-width: 17rem"
-								value="#{misRest.menu}"  id="dt_menu" scrollable="true"
+								value="#{misRest.menu}" id="dt_menu" scrollable="true"
 								scrollHeight="500" emptyMessage="No se han encontrado platos">
 								<p:column headerText="Título">
 									<h:outputText value="#{plato.titulo}" />
@@ -103,7 +102,8 @@ Mis restaurantes
 								</p:column>
 								<p:column headerText="Acciones">
 
-									<p:commandButton style="margin:0.5rem" icon="pi pi-pencil" update="editar_plato"
+									<p:commandButton style="margin:0.5rem" icon="pi pi-pencil"
+										update="editar_plato"
 										oncomplete="PF('editarPlatoDialog').show()"
 										styleClass="edit-button rounded-button ui-button-success"
 										action="#{misRest.selectPlatoEdit()}" process="@this">
@@ -111,9 +111,9 @@ Mis restaurantes
 											target="#{misRest.platoSelect}" />
 									</p:commandButton>
 
-									<p:commandButton style="margin:0.5rem" class="ui-button-danger rounded-button"
-										icon="pi pi-trash" process="@this"
-										oncomplete="PF('borrarPlato').show()"
+									<p:commandButton style="margin:0.5rem"
+										class="ui-button-danger rounded-button" icon="pi pi-trash"
+										process="@this" oncomplete="PF('borrarPlato').show()"
 										update="eliminar_plato:dialogoConfirmacionEliminarPlato">
 										<f:setPropertyActionListener value="#{plato}"
 											target="#{misRest.platoSelect}" />
@@ -214,10 +214,20 @@ Mis restaurantes
 
 			</c:when>
 			<c:otherwise>
-				<div
-					style="text-align: center; font-size: larger; font-weight: bolder;">
-					Lo sentimos, solo los usuarios del tipo restaurante tienen acceso a
-					esta página.</div>
+				<p:fragment
+					rendered="#{userSessionWeb.isLogin() and userSessionWeb.isRestaurante()}">
+					<div
+						style="text-align: center; font-size: larger; font-weight: bolder;">
+						Lo sentimos, no puede acceder a esta página porque su cuenta de
+						restaurante aún no ha sido validada.</div>
+				</p:fragment>
+				<p:fragment
+					rendered="#{userSessionWeb.isLogin() and !userSessionWeb.isRestaurante()}">
+					<div
+						style="text-align: center; font-size: larger; font-weight: bolder;">
+						Lo sentimos, solo los usuarios del tipo restaurante tienen acceso
+						a esta página.</div>
+				</p:fragment>
 			</c:otherwise>
 		</c:choose>
 	</ui:define>

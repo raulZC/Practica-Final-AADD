@@ -9,16 +9,24 @@
 Perfil de usuario
 </ui:define>
 	<ui:define name="content">
-		<h1>Hola #{userSessionWeb.usuario.nombre}</h1>
+		<h1 sytle="font-size: 1.2rem">Hola, </h1><h1 style="color: #d52349; font-size: 2.5rem; font-weight: bold; text-transform: uppercase;">#{userSessionWeb.usuario.nombre}</h1>
+		<br></br>
 		<p:panelGrid columns="2" styleClass="perfil-usuario">
-			<h:outputText value="Nombre: " />
+			<h:outputText style="font-weight: bold;color:#2E0101" value="Nombre: " />
 			<h:outputText value="#{userSessionWeb.usuario.nombre}" />
-			<h:outputText value="Apellidos: " />
+			<h:outputText style="font-weight: bold;color:#2E0101" value="Apellidos: " />
 			<h:outputText value="#{userSessionWeb.usuario.apellidos}" />
-			<h:outputText value="Tipo de cuenta: " />
+			<h:outputText style="font-weight: bold;color:#2E0101" value="Tipo de cuenta: " />
 			<h:outputText value="#{userSessionWeb.usuario.tipo}" />
-			<h:outputText value="Fecha de nacimiento: " />
+			<h:outputText style="font-weight: bold;color:#2E0101" value="Fecha de nacimiento: " />
 			<h:outputText value="#{userSessionWeb.usuario.fechaNacimiento}" />
+			<h:outputText style="font-weight: bold;color:#2E0101" value="Cuenta verificada: " />
+			<ui:fragment rendered="#{userSessionWeb.usuario.validado}">
+				<h:outputText value="Sí" style="color: #2AC002;font-weight: bolder;font-size:1.25rem" />
+			</ui:fragment>
+			<ui:fragment rendered="#{!userSessionWeb.usuario.validado}">
+				<h:outputText value="No" style="color: red;font-weight: bolder;font-size:1.25rem" />
+			</ui:fragment>
 		</p:panelGrid>
 	</ui:define>
 </ui:composition>

@@ -17,13 +17,15 @@ public class UsuarioDTO implements Serializable {
 	protected String apellidos;
 	protected TipoUsuario tipo;
 	protected LocalDate fechaNacimiento;
+	protected boolean validado;
 
-	public UsuarioDTO(Integer id, String nombre, String apellidos, LocalDate fechaNacimiento, TipoUsuario tipo) {
+	public UsuarioDTO(Integer id, String nombre, String apellidos, LocalDate fechaNacimiento, TipoUsuario tipo,boolean validado) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.fechaNacimiento = fechaNacimiento;
 		this.tipo = tipo;
+		this.validado=validado;
 	}
 	// getters y setters
 
@@ -65,6 +67,14 @@ public class UsuarioDTO implements Serializable {
 
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public boolean isValidado() {
+		return validado;
+	}
+
+	public void setValidado(boolean validado) {
+		this.validado = validado;
 	}
 
 }

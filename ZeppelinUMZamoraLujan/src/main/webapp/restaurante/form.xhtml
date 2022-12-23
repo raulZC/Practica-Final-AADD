@@ -12,12 +12,8 @@ Crear restaurante
 	<ui:define name="content">
 		<!-- Ver si quitar admin -->
 		<c:choose>
-
-
-
-
 			<c:when
-				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin())}">
+				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin())and userSessionWeb.getUsuario().isValidado()}">
 				<script type="text/javascript"
 					src="https://maps.google.com/maps/api/js?sensor=false"></script>
 				<h:form id="restaurantes">
@@ -79,10 +75,20 @@ Crear restaurante
 
 			</c:when>
 			<c:otherwise>
-				<div
-					style="text-align: center; font-size: larger; font-weight: bolder;">
-					Lo sentimos, solo los usuarios del tipo restaurante tienen acceso a
-					esta página.</div>
+				<p:fragment
+					rendered="#{userSessionWeb.isLogin() and userSessionWeb.isRestaurante()}">
+					<div
+						style="text-align: center; font-size: larger; font-weight: bolder;">
+						Lo sentimos, no puede acceder a esta página porque su cuenta de
+						restaurante aún no ha sido validada.</div>
+				</p:fragment>
+				<p:fragment
+					rendered="#{userSessionWeb.isLogin() and !userSessionWeb.isRestaurante()}">
+					<div
+						style="text-align: center; font-size: larger; font-weight: bolder;">
+						Lo sentimos, solo los usuarios del tipo restaurante tienen acceso
+						a esta página.</div>
+				</p:fragment>
 			</c:otherwise>
 		</c:choose>
 	</ui:define>
