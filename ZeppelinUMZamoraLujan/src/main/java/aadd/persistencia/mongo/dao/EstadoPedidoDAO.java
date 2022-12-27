@@ -1,15 +1,20 @@
 package aadd.persistencia.mongo.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 
-public class EstadoPedidoDAO extends ExtensionMongoDAO<EstadoPedidoDAO> {
+import aadd.persistencia.jpa.bean.TipoEstado;
+import aadd.persistencia.mongo.bean.EstadoPedido;
+
+public class EstadoPedidoDAO extends ExtensionMongoDAO<EstadoPedido> {
 
 	private static EstadoPedidoDAO estadoPedidoDAO;
 
@@ -22,27 +27,36 @@ public class EstadoPedidoDAO extends ExtensionMongoDAO<EstadoPedidoDAO> {
 
 	@Override
 	public void createCollection() {
-		collection = db.getCollection("estadoPedidoDAO", EstadoPedidoDAO.class).withCodecRegistry(defaultCodecRegistry);
+		collection = db.getCollection("estadoPedido", EstadoPedido.class).withCodecRegistry(defaultCodecRegistry);
+	}
+	
+	public EstadoPedido crearEstadoPedido(ObjectId pedido, Date fechaEstado, TipoEstado estado) {
+		EstadoPedido estPed = new EstadoPedido();
+		estPed.setPedido(pedido);
+		estPed.setFechaEstado(fechaEstado);
+		estPed.setEstado(estado.toString());
+		collection.insertOne(estPed);
+		return estPed;
 	}
 
-	public List<EstadoPedidoDAO> findByEstado(String estado) {
+	public List<EstadoPedido> findByEstado(String estado) {
 
 		Bson query = Filters.eq("estado", estado);
-		FindIterable<EstadoPedidoDAO> resultados = collection.find(query);
-		MongoCursor<EstadoPedidoDAO> it = resultados.iterator();
-		List<EstadoPedidoDAO> pedidos = new ArrayList<EstadoPedidoDAO>();
+		FindIterable<EstadoPedido> resultados = collection.find(query);
+		MongoCursor<EstadoPedido> it = resultados.iterator();
+		List<EstadoPedido> pedidos = new ArrayList<EstadoPedido>();
 		while (it.hasNext()) {
 			pedidos.add(it.next());
 		}
 		return pedidos;
 	}
 
-	public List<EstadoPedidoDAO> findByPedido(Integer pedido) {
+	public List<EstadoPedido> findByPedido(Integer pedido) {
 
 		Bson query = Filters.eq("pedido", pedido);
-		FindIterable<EstadoPedidoDAO> resultados = collection.find(query);
-		MongoCursor<EstadoPedidoDAO> it = resultados.iterator();
-		List<EstadoPedidoDAO> estadoPedidos = new ArrayList<EstadoPedidoDAO>();
+		FindIterable<EstadoPedido> resultados = collection.find(query);
+		MongoCursor<EstadoPedido> it = resultados.iterator();
+		List<EstadoPedido> estadoPedidos = new ArrayList<EstadoPedido>();
 		while (it.hasNext()) {
 			estadoPedidos.add(it.next());
 		}

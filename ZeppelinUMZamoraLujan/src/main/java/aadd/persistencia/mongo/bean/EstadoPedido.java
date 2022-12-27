@@ -2,6 +2,7 @@ package aadd.persistencia.mongo.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -12,8 +13,8 @@ public class EstadoPedido implements Serializable {
 
 	@BsonId
 	private ObjectId id;
-	private Integer pedido;
-	private LocalDate fechaEstado;
+	private ObjectId pedido;
+	private Date fechaEstado;
 	private String estado;
 
 	// getters y setters
@@ -26,19 +27,19 @@ public class EstadoPedido implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getPedido() {
+	public ObjectId getPedido() {
 		return pedido;
 	}
 
-	public void setPedido(Integer pedido) {
+	public void setPedido(ObjectId pedido) {
 		this.pedido = pedido;
 	}
 
-	public LocalDate getFechaEstado() {
+	public Date getFechaEstado() {
 		return fechaEstado;
 	}
 
-	public void setFechaEstado(LocalDate fechaEstado) {
+	public void setFechaEstado(Date fechaEstado) {
 		this.fechaEstado = fechaEstado;
 	}
 

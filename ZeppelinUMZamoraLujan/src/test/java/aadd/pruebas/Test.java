@@ -135,11 +135,11 @@ class Test {
 		assertTrue(servicio.findByRestaurante(3).size() == 6);
 	}
 
-	@org.junit.jupiter.api.Test
-	void hacerpedido() {
-		ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();
-		servicio.crearPedido();
-	}
+//	@org.junit.jupiter.api.Test
+//	void hacerpedido() {
+//		ServicioGestionPedido servicio = ServicioGestionPedido.getServicioGestionPedido();
+//		servicio.crearPedido();
+//	}
 
 	@org.junit.jupiter.api.Test
 	void crearCategoriaRestaurante() {

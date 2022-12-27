@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template_privada.xhtml">
+	<ui:define name="title">
+Listado de Mis Pedidos
+</ui:define>
+
+	<ui:param name="menuseleccionado" value="estilo8" />
+	<ui:define name="content">
+		<h:form id="pedidos">
+			<h2>
+				<h:outputText value=" Mis Pedidos" />
+			</h2>
+			<p:dataTable var="pedido" style="prueba"
+				value="#{pedidoListWeb.listaPedidosDTO}" rows="5" id="tabla_header"
+				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:column headerText="Nº">
+					<h:outputText value="#{pedido.id}" />
+				</p:column>
+				<p:column headerText="Restaurante">
+					<h:outputText value="#{pedido.nombreRestaurante}" />
+				</p:column>
+				<p:column headerText="Fecha">
+					<h:outputText value="#{pedido.fechaHora}" />
+				</p:column>
+				<p:column headerText="Direccion">
+					<h:outputText value="#{pedido.direccion}" />
+				</p:column>
+				<p:column headerText="Importe">
+					<h:outputText value="#{pedido.importe}" />
+				</p:column>
+				<p:column>
+					<p:commandButton value="Ver Detalle"
+						actionListener="#{pedidoListWeb.verDetalle()}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

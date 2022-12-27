@@ -1,7 +1,7 @@
 package aadd.persistencia.mongo.dao;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.conversions.Bson;
@@ -30,7 +30,7 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 	
 	
 	public Pedido crearPedido(Integer cliente, Integer repartidor, Integer restaurante, String direccion,
-			LocalDate fechaHora, LocalDate fechaEsperado, String comentario, Double importe) {
+			 Date fechaHora,  Date fechaEsperado, String comentario, Double importe) {
 		Pedido ped = new Pedido();
 		ped.setCliente(cliente);
 		ped.setRepartidor(repartidor);

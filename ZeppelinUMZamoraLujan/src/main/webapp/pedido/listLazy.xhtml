@@ -7,7 +7,7 @@
 	<ui:define name="title">
 Listado de restaurantes
 </ui:define>
-	<ui:param name="menuseleccionado" value="estilo2" />
+	<ui:param name="menuseleccionado" value="estilo8" />
 	<ui:define name="content">
 		<h:form id="restaurantes">
 			<div style="margin-top: 10px; margin-bottom: 10px;">
@@ -57,12 +57,12 @@ Listado de restaurantes
 				<h:outputText value="Total: #{lazyRestauranteListWeb.total}"
 					id="total" />
 			</h2>
-			<p:dataTable var="restaurante"
+			<p:dataTable var="restaurante" style="prueba"
 				value="#{lazyRestauranteListWeb}" rows="5" id="tabla_header"
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 				<p:column>
-						<h:outputText value="#{restaurante.nombre}" />
+					<h:outputText value="#{restaurante.nombre}" />
 				</p:column>
 				<p:column>
 					<p:rating value="#{restaurante.valoracionGlobal.intValue()}"

@@ -4,7 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/template/template_privada.xhtml">
-	<ui:param name="menuseleccionado" value="estilo2" />
+	<ui:param name="menuseleccionado" value="estilo8" />
 	<ui:define name="title">Realizar Pedido</ui:define>
 	<ui:define name="metadata">
 		<f:metadata>
@@ -27,15 +27,49 @@
 					<h:outputText value="#{plato.precio}" />
 				</p:column>
 				<p:column style="width: 200px;" headerText="Añadir">
-				<p:commandButton value="+" style="margin-right:5px"
-				actionListener="#{pedidoWeb.añadirCantidad(plato.id)}" />
-					
+					<p:commandButton value="+" style="margin-right:5px"
+						actionListener="#{restauranteMenuList.añadirCantidad(plato.id)}">
+						<f:ajax execute="@this" render=":menu" />
+					</p:commandButton>
+					<p:commandButton value="-" style="margin-right:5px"
+						actionListener="#{restauranteMenuList.quitarCantidad(plato.id)}">
+						<f:ajax execute="@this" render=":menu" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Cantidad">
+					<h:outputText value="#{restauranteMenuList.getCantidad(plato.id)}" />
 				</p:column>
 			</p:dataTable>
+			<h4>Precio Total: #{restauranteMenuList.precioTotal} €</h4>
 			<p:commandButton value="Cancelar" style="margin-right:5px"
-				actionListener="#{pedidoWeb.cancelar()}" />
-			<p:commandButton value="Realizar Pedido" />
+				actionListener="#{restauranteMenuList.cancelar()}" />
+			<p:commandButton value="Crear Pedido"
+				onclick="PF('crearPedido').show();" />
 
+
+			<p:dialog header="Crear Pedido" modal="true" widgetVar="crearPedido"
+				width="650">
+				<p:outputPanel id="nuevoPedido" style="margin: 10px;">
+					<h:panelGrid columns="2">
+						<h:outputText value="Nombre restaurante" />#{restauranteMenuList.restauranteSeleccionado.nombre}
+                
+                        <h:outputText value="Direccion" />
+						<p:inputText value="#{restauranteMenuList.direccion}" />
+
+						<h:outputText value="Comentario" />
+						<p:inputTextarea rows="10" cols="50"
+							value="#{restauranteMenuList.comentario}" />
+
+						<h:outputText value="Precio Total" />#{restauranteMenuList.precioTotal}
+						
+					</h:panelGrid>
+					<p:commandButton value="Cerrar" style="margin-right:5px"
+						onclick="PF('crearPedido').hide();" />
+					<p:commandButton value="Realizar Pedido"
+						actionListener="#{restauranteMenuList.realizarPedido()}" />
+
+				</p:outputPanel>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -2,6 +2,7 @@ package aadd.persistencia.mongo.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -17,8 +18,8 @@ public class Pedido implements Serializable{
     private Integer repartidor;
     private Integer restaurante;
     private String direccion;
-    private LocalDate fechaHora;
-    private LocalDate fechaEsperado;
+    private  Date fechaHora;
+    private  Date fechaEsperado;
     private String comentario;
     private Double importe;
     
@@ -61,16 +62,16 @@ public class Pedido implements Serializable{
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	public LocalDate getFechaHora() {
+	public  Date getFechaHora() {
 		return fechaHora;
 	}
-	public void setFechaHora(LocalDate fechaHora) {
+	public void setFechaHora( Date fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	public LocalDate getFechaEsperado() {
+	public  Date getFechaEsperado() {
 		return fechaEsperado;
 	}
-	public void setFechaEsperado(LocalDate fechaEsperado) {
+	public void setFechaEsperado( Date fechaEsperado) {
 		this.fechaEsperado = fechaEsperado;
 	}
 	public String getComentario() {
