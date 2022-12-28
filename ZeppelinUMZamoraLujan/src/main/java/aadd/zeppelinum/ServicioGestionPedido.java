@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import aadd.persistencia.jpa.bean.TipoEstado;
 import aadd.persistencia.jpa.bean.Usuario;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
+import aadd.persistencia.mongo.bean.EstadoPedido;
 import aadd.persistencia.mongo.bean.ItemPedido;
 import aadd.persistencia.mongo.bean.Opinion;
 import aadd.persistencia.mongo.bean.Pedido;
@@ -133,7 +135,7 @@ public class ServicioGestionPedido {
 		Pedido pedido = pedidoDAO.crearPedido(cliente, repartidor, restaurante, direccion, fechaHora, fechaEsperado,
 				comentario, importe);
 
-		estadoPedidoDAO.crearEstadoPedido(pedido.getId(), fechaHora, TipoEstado.ACEPTADO);
+		estadoPedidoDAO.crearEstadoPedido(pedido.getId(), fechaHora, TipoEstado.INICIO);
 
 		for (ItemPedido itemPedido : listaItemPedidos) {
 			itemPedidoDAO.crearItemPedido(itemPedido.getPlato(), pedido.getId(), itemPedido.getCantidad(),
@@ -150,15 +152,61 @@ public class ServicioGestionPedido {
 		int cont = 1;
 		for (Pedido p : pedidos) {
 			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(p.getRestaurante());
+			List<ItemPedido> listItem = ItemPedidoDAO.getItemPedidoDAO().findByPedido(p.getId());
+			List<EstadoPedido> listEstado = EstadoPedidoDAO.getEstadopedidoDAO().findByPedido(p.getId());
+			Usuario repartidor = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
 			PedidoDTO pedidoDTO = new PedidoDTO();
 			pedidoDTO.setId(cont);
+			pedidoDTO.setIdReal(p.getId());
 			pedidoDTO.setNombreRestaurante(r.getNombre());
 			pedidoDTO.setFechaHora(p.getFechaHora());
 			pedidoDTO.setDireccion(p.getDireccion());
 			pedidoDTO.setImporte(p.getImporte());
+			pedidoDTO.setComentario(p.getComentario());
+			pedidoDTO.setListaItems(listItem);
+			pedidoDTO.setListaEstados(listEstado);
+			pedidoDTO.setNombreRepartidor(repartidor.getApellidos() + ", " + repartidor.getNombre());
 			cont++;
 			pedidosDTO.add(pedidoDTO);
 		}
 		return pedidosDTO;
+	}
+
+	public TipoEstado avanzarEstado(ObjectId id) {
+		EstadoPedidoDAO estadoPedidoDAO = EstadoPedidoDAO.getEstadopedidoDAO();
+		Date fecha = new Date();
+
+		List<EstadoPedido> estados = estadoPedidoDAO.findByPedido(id);
+		Collections.sort(estados);
+		TipoEstado tipo = TipoEstado.valueOf( estados.get(estados.size() - 1).getEstado().toUpperCase());
+
+		switch (tipo) {
+		case INICIO:
+			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.ACEPTADO);
+			return TipoEstado.ACEPTADO;
+		case ACEPTADO:
+			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.PREPARADO);
+			return TipoEstado.PREPARADO;
+		case PREPARADO:
+			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.RECOGIDO);
+			return TipoEstado.RECOGIDO;
+		default:
+			return TipoEstado.ERROR;
+		}
+	}
+
+	public TipoEstado cancelarPedido(ObjectId id) {
+		EstadoPedidoDAO estadoPedidoDAO = EstadoPedidoDAO.getEstadopedidoDAO();
+		Date fecha = new Date();
+
+		List<EstadoPedido> estados = estadoPedidoDAO.findByPedido(id);
+		Collections.sort(estados);
+		TipoEstado tipo = TipoEstado.valueOf( estados.get(estados.size() - 1).getEstado().toUpperCase());
+
+		if (tipo.equals(TipoEstado.CANCELADO))
+			return TipoEstado.ERROR;
+
+		estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.CANCELADO);
+		return TipoEstado.CANCELADO;
 	}
 }

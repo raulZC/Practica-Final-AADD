@@ -238,6 +238,10 @@ public class ServicioGestionPlataforma {
 	public List<PlatoDTO> getAllMenuByRestaurante(Integer restaurante) {
 		return PlatoDAO.getPlatoDAO().findAllplatosByRestaurante(restaurante);
 	}
+	
+	public Plato getPlatoByid(Integer id) {
+		return PlatoDAO.getPlatoDAO().findPlatoById(id);
+	}
 
 	public List<RestauranteDTO> getRestaurantesByFiltros(String keyword, boolean verNovedades,
 			boolean ordernarByValoracion, boolean ceroIncidencias) {

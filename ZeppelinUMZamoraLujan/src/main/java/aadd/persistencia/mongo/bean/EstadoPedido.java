@@ -1,13 +1,12 @@
 package aadd.persistencia.mongo.bean;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
-public class EstadoPedido implements Serializable {
+public class EstadoPedido implements Serializable, Comparable<EstadoPedido> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,6 +48,15 @@ public class EstadoPedido implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	@Override
+	public int compareTo(EstadoPedido o) {
+		if (this.getFechaEstado().after(o.getFechaEstado()))
+			return 1;
+		else if (this.getFechaEstado().before(o.getFechaEstado()))
+			return -1;
+		return 0;
 	}
 
 }

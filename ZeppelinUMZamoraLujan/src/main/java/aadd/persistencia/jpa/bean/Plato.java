@@ -18,7 +18,8 @@ import javax.persistence.Table;
 @Table(name = "plato")
 @NamedQueries({
     @NamedQuery(name = "Plato.findPlatosDisponiblesByRestaurante", query = " SELECT p FROM Plato p WHERE p.disponibilidad = true and p.restaurante.id = :restaurante "),
-    @NamedQuery(name = "Plato.findAllPlatosByRestaurante", query = " SELECT p FROM Plato p WHERE p.restaurante.id = :restaurante ")
+    @NamedQuery(name = "Plato.findAllPlatosByRestaurante", query = " SELECT p FROM Plato p WHERE p.restaurante.id = :restaurante "),
+    @NamedQuery(name = "Plato.findPlatoById", query = " SELECT p FROM Plato p WHERE p.id = :id ")
 })
 public class Plato implements Serializable {
 

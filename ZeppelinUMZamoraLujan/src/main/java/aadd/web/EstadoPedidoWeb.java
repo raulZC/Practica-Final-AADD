@@ -14,6 +14,7 @@ import org.primefaces.PrimeFaces;
 import aadd.persistencia.dto.ItemPedidoDTO;
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.jpa.bean.Plato;
+import aadd.persistencia.jpa.bean.TipoEstado;
 import aadd.persistencia.mongo.bean.ItemPedido;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
@@ -21,7 +22,7 @@ import aadd.zeppelinum.ServicioGestionPlataforma;
 
 @Named
 @ViewScoped
-public class PedidoListWeb implements Serializable {
+public class EstadoPedidoWeb implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,18 +38,28 @@ public class PedidoListWeb implements Serializable {
 	private PedidoDTO pedido;
 	private int id;
 
-	public PedidoListWeb() {
+	public EstadoPedidoWeb() {
 		servicioGestion = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		servicioPedido = ServicioGestionPedido.getServicioGestionPedido();
 		listaPedidosDTO = new ArrayList<PedidoDTO>();
 
 	}
 
-	public void onPedidoSelect(int id) {
-		this.id = id - 1;
-		pedido = listaPedidosDTO.get(id - 1);
-		PrimeFaces current = PrimeFaces.current();
-		current.executeScript("PF('detallePedido').show();");
+	public void avanzarEstadoPedido(int id) {
+		TipoEstado estado = servicioPedido.avanzarEstado(listaPedidosDTO.get(id-1).getIdReal());
+		if (estado.equals(TipoEstado.ERROR)) {
+			PrimeFaces current = PrimeFaces.current();
+			current.executeScript("PF('errorEstado').show();");
+		}
+
+	}
+
+	public void cancelarPedido(int id) {
+		TipoEstado estado = servicioPedido.cancelarPedido(listaPedidosDTO.get(id-1).getIdReal());
+		if (estado.equals(TipoEstado.ERROR)) {
+			PrimeFaces current = PrimeFaces.current();
+			current.executeScript("PF('errorEstado').show();");
+		}
 	}
 
 	public List<PedidoDTO> getListaPedidosDTO() {

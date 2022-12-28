@@ -34,10 +34,45 @@ Listado de Mis Pedidos
 					<h:outputText value="#{pedido.importe}" />
 				</p:column>
 				<p:column>
-					<p:commandButton value="Ver Detalle"
-						actionListener="#{pedidoListWeb.verDetalle()}" />
+					<h:commandLink
+						actionListener="#{pedidoListWeb.onPedidoSelect(pedido.id)}">
+						<h:outputText value="Ver Detalle" />
+					</h:commandLink>
 				</p:column>
 			</p:dataTable>
+
+			<p:dialog header="Detalle Pedido" widgetVar="detallePedido"
+				width="650">
+				<p:outputPanel style="margin: 10px;">
+					<h:panelGrid columns="2">
+						<h:outputText value="Nombre restaurante" />#{pedidoListWeb.nombreRestaurante}
+						<h:outputText value="Fecha Pedido" />#{pedidoListWeb.fechaHora}
+						<h:outputText value="Direccion" />#{pedidoListWeb.direccion}
+						<h:outputText value="Importe" />#{pedidoListWeb.importe}
+						<h:outputText value="Nombre repartidor" />#{pedidoListWeb.nombreRepartidor}
+						<h:outputText value="Comentario" />#{pedidoListWeb.comentario}
+							
+					</h:panelGrid>
+
+					<p:dataTable var="item" style="prueba"
+						value="#{pedidoListWeb.listaItems}">
+						<p:column headerText="Plato">
+							<h:outputText value="#{item.nombrePlato}" />
+						</p:column>
+						<p:column headerText="Cantidad">
+							<h:outputText value="#{item.cantidad}" />
+						</p:column>
+						<p:column headerText="Precio">
+							<h:outputText value="#{item.precioTotal}" />
+						</p:column>
+					</p:dataTable>
+
+					<p:commandButton value="Cerrar" style="margin-right:5px"
+						onclick="PF('detallePedido').hide();" />
+
+				</p:outputPanel>
+			</p:dialog>
+
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template_privada.xhtml">
+	<ui:define name="title">
+Listado de Pedidos
+</ui:define>
+
+	<ui:param name="menuseleccionado" value="estilo8" />
+	<ui:define name="content">
+		<h:form id="menu">
+			<h2>
+				<h:outputText value=" Mis Pedidos" />
+			</h2>
+			<p:dataTable var="pedido" style="prueba"
+				value="#{estadoPedidoWeb.listaPedidosDTO}" rows="5"
+				id="tabla_header" paginator="true"
+				rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+				<p:column headerText="Nº">
+					<h:outputText value="#{pedido.id}" />
+				</p:column>
+				<p:column headerText="Fecha">
+					<h:outputText value="#{pedido.fechaHora}" />
+				</p:column>
+				<p:column headerText="Estado Actual">
+					<h:outputText value="#{pedido.estadoActual}" />
+				</p:column>
+				<p:column headerText="Direccion">
+					<h:outputText value="#{pedido.direccion}" />
+				</p:column>
+				<p:column headerText="Importe">
+					<h:outputText value="#{pedido.importe}" />
+				</p:column>
+				<p:column headerText="Avanzar Estado">
+					<p:commandButton value="-->"
+						actionListener="#{estadoPedidoWeb.avanzarEstadoPedido(pedido.id)}">
+						<f:ajax execute="@this" render=":menu" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Cancelar Pedido">
+					<p:commandButton value="X"
+						actionListener="#{estadoPedidoWeb.cancelarPedido(pedido.id)}">
+						<f:ajax execute="@this" render=":menu" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+
+		</h:form>
+		<p:dialog header="Error Cambiando Estado" widgetVar="errorEstado"
+			width="650">
+			<p:outputPanel style="margin: 10px;">
+				<h:outputText value="No se puede Modificar el estado del Pedido." />
+			</p:outputPanel>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

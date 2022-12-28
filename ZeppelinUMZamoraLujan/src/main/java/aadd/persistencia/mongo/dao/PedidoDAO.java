@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
@@ -75,5 +76,13 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 		MongoCursor<Pedido> it = resultados.iterator();
 		return it.tryNext();
 	}
+	
+	public Pedido findByID(ObjectId id) {
+		Bson query = Filters.eq("id", id);
+		FindIterable<Pedido> resultados = collection.find(query);
+		MongoCursor<Pedido> it = resultados.iterator();
+		return it.tryNext();
+	}
+
 
 }

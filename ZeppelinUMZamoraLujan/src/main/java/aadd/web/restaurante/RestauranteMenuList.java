@@ -95,7 +95,7 @@ public class RestauranteMenuList implements Serializable {
 	public void cancelar() {
 		try {
 			String contextoURL = facesContext.getExternalContext().getApplicationContextPath();
-			facesContext.getExternalContext().redirect(contextoURL + "/restaurante/listLazy.xhtml");
+			facesContext.getExternalContext().redirect(contextoURL + "/pedido/listLazy.xhtml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

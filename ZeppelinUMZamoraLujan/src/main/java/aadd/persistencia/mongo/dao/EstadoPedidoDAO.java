@@ -13,6 +13,7 @@ import com.mongodb.client.model.Filters;
 
 import aadd.persistencia.jpa.bean.TipoEstado;
 import aadd.persistencia.mongo.bean.EstadoPedido;
+import aadd.persistencia.mongo.bean.Pedido;
 
 public class EstadoPedidoDAO extends ExtensionMongoDAO<EstadoPedido> {
 
@@ -51,7 +52,7 @@ public class EstadoPedidoDAO extends ExtensionMongoDAO<EstadoPedido> {
 		return pedidos;
 	}
 
-	public List<EstadoPedido> findByPedido(Integer pedido) {
+	public List<EstadoPedido> findByPedido(ObjectId pedido) {
 
 		Bson query = Filters.eq("pedido", pedido);
 		FindIterable<EstadoPedido> resultados = collection.find(query);
@@ -62,4 +63,12 @@ public class EstadoPedidoDAO extends ExtensionMongoDAO<EstadoPedido> {
 		}
 		return estadoPedidos;
 	}
+	
+	public EstadoPedido findByID(ObjectId id) {
+		Bson query = Filters.eq("id", id);
+		FindIterable<EstadoPedido> resultados = collection.find(query);
+		MongoCursor<EstadoPedido> it = resultados.iterator();
+		return it.tryNext();
+	}
+
 }

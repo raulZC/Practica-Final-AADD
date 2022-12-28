@@ -62,7 +62,12 @@ Listado de restaurantes
 				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 				<p:column>
-					<h:outputText value="#{restaurante.nombre}" />
+					<h:commandLink
+						actionListener="#{lazyRestauranteListWeb.onRestauranteSelect}"
+						immediate="true">
+						<f:ajax render="@form" />
+						<h:outputText value="#{restaurante.nombre}" />
+					</h:commandLink>
 				</p:column>
 				<p:column>
 					<p:rating value="#{restaurante.valoracionGlobal.intValue()}"

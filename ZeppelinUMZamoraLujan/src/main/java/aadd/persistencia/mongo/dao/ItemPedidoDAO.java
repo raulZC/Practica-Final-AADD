@@ -39,7 +39,7 @@ public class ItemPedidoDAO extends ExtensionMongoDAO<ItemPedido> {
 		return itemPed;
 	}
 
-	public List<ItemPedido> findByPedido(Integer pedido) {
+	public List<ItemPedido> findByPedido(ObjectId pedido) {
 
 		Bson query = Filters.eq("pedido", pedido);
 		FindIterable<ItemPedido> resultados = collection.find(query);
