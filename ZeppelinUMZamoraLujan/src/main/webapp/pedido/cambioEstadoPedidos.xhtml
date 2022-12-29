@@ -35,13 +35,13 @@ Listado de Pedidos
 					<h:outputText value="#{pedido.importe}" />
 				</p:column>
 				<p:column headerText="Avanzar Estado">
-					<p:commandButton value="-->"
+					<p:commandButton value="" styleClass="ui-button-right-arrow"
 						actionListener="#{estadoPedidoWeb.avanzarEstadoPedido(pedido.id)}">
 						<f:ajax execute="@this" render=":menu" />
 					</p:commandButton>
 				</p:column>
 				<p:column headerText="Cancelar Pedido">
-					<p:commandButton value="X"
+					<p:commandButton value="" styleClass="ui-button-cancelar-pedido"
 						actionListener="#{estadoPedidoWeb.cancelarPedido(pedido.id)}">
 						<f:ajax execute="@this" render=":menu" />
 					</p:commandButton>

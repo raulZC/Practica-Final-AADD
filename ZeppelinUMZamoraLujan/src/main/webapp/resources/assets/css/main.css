@@ -2935,3 +2935,43 @@ input, select, textarea {
 			}
 
 	}
+	
+.ui-button-cancelar-pedido {
+	
+	background-image:  url("#{resource['assets/css/images/cancelar_pedido_icon.png']}") !important;
+	background-size: 100% !important;
+	border: none !important;
+	background-color:rgb(255 193 193) !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-button-cancelar-pedido:hover {
+	
+	
+	background-color:rgb(255 161 161) !important;
+
+}
+
+.ui-button-right-arrow {
+	
+	background-image:  url("#{resource['assets/css/images/arrow-right.png']}") !important;
+	background-size: 100% !important;
+	border: none !important;
+	background-color:rgb(186 180 255) !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-button-right-arrow:hover {
+	
+	
+	background-color:rgb(142 132 255) !important;
+
+}
+
+	
