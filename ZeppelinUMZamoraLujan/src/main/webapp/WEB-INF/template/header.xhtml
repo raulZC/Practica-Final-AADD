@@ -50,24 +50,24 @@
 					</c:if>
 				</ul></li>
 		</c:if>
-
 		<c:if test="${not isLogin or isAdmin}">
 			<li class="#{estilo3}"><a
 				href="#{request.contextPath}/usuario/registro.xhtml">Registro</a></li>
+		</c:if>
+		<c:if test="${isAdmin}">
+			<li class="#{estilo4}"><a
+				href="#{request.contextPath}/noticias/infousuario.xhtml">Comunicar
+					novedades</a></li>
+		</c:if>
+		<c:if test="${isAdmin}">
+			<li class="#{estilo7}"><a
+				href="#{request.contextPath}/restaurante/formCategorias.xhtml">Editar
+					categorías</a></li>
+		</c:if>
+		<li class="#{estilo5}"><a
+			href="#{request.contextPath}/usuario/estadisticas.xhtml">Estadisticas</a></li>
 
-			<c:if test="${isAdmin}">
-				<li class="#{estilo4}"><a
-					href="#{request.contextPath}/noticias/infousuario.xhtml">Comunicar
-						novedades</a></li>
-			</c:if>
-			<c:if test="${isAdmin}">
-				<li class="#{estilo7}"><a
-					href="#{request.contextPath}/restaurante/formCategorias.xhtml">Editar
-						categorías</a></li>
-			</c:if>
-			<li class="#{estilo5}"><a
-				href="#{request.contextPath}/usuario/estadisticas.xhtml">Estadisticas</a></li>
-
+		<c:if test="${isLogin}">
 			<li class="#{estilo6}"><a href="#"><i
 					class="fa fa-user-circle" /> Perfil</a>
 				<ul>
@@ -77,6 +77,7 @@
 
 				</ul></li>
 		</c:if>
+
 	</ul>
 	</nav> <!-- Banner --> </section>
 	<!-- Nav -->
