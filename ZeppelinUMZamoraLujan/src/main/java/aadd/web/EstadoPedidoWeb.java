@@ -13,6 +13,7 @@ import org.primefaces.PrimeFaces;
 
 import aadd.persistencia.dto.ItemPedidoDTO;
 import aadd.persistencia.dto.PedidoDTO;
+import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.TipoEstado;
 import aadd.persistencia.mongo.bean.ItemPedido;
@@ -46,7 +47,7 @@ public class EstadoPedidoWeb implements Serializable {
 	}
 
 	public void avanzarEstadoPedido(int id) {
-		TipoEstado estado = servicioPedido.avanzarEstado(listaPedidosDTO.get(id-1).getIdReal());
+		TipoEstado estado = servicioPedido.avanzarEstado(listaPedidosDTO.get(id - 1).getIdReal());
 		if (estado.equals(TipoEstado.ERROR)) {
 			PrimeFaces current = PrimeFaces.current();
 			current.executeScript("PF('errorEstado').show();");
@@ -55,7 +56,7 @@ public class EstadoPedidoWeb implements Serializable {
 	}
 
 	public void cancelarPedido(int id) {
-		TipoEstado estado = servicioPedido.cancelarPedido(listaPedidosDTO.get(id-1).getIdReal());
+		TipoEstado estado = servicioPedido.cancelarPedido(listaPedidosDTO.get(id - 1).getIdReal());
 		if (estado.equals(TipoEstado.ERROR)) {
 			PrimeFaces current = PrimeFaces.current();
 			current.executeScript("PF('errorEstado').show();");
@@ -63,7 +64,12 @@ public class EstadoPedidoWeb implements Serializable {
 	}
 
 	public List<PedidoDTO> getListaPedidosDTO() {
-		listaPedidosDTO = servicioPedido.findByCliente(userSessionWeb.getUsuario().getId());
+		List<RestauranteDTO> restaurentes = servicioGestion
+				.getRestauranteByResponsable(userSessionWeb.getUsuario().getId());
+		listaPedidosDTO = new ArrayList<PedidoDTO>();
+		for (RestauranteDTO restauranteDTO : restaurentes) {
+			listaPedidosDTO.addAll(servicioPedido.findPedidoByRestaurante(restauranteDTO.getId()));
+		}
 		return listaPedidosDTO;
 	}
 
@@ -84,30 +90,44 @@ public class EstadoPedidoWeb implements Serializable {
 	}
 
 	public String getNombreRestaurante() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getNombreRestaurante();
 	}
 
 	public String getFechaHora() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getFechaHora();
 	}
 
 	public String getDireccion() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getDireccion();
 	}
 
 	public String getImporte() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getImporte() + " €";
 	}
 
 	public String getNombreRepartidor() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getNombreRepartidor();
 	}
 
 	public String getComentario() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getComentario();
 	}
 
 	public List<ItemPedidoDTO> getListaItems() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		List<ItemPedidoDTO> lista = new ArrayList<ItemPedidoDTO>();
 		List<ItemPedido> listaItem = listaPedidosDTO.get(id).getListaItems();
 		for (ItemPedido itemPedido : listaItem) {

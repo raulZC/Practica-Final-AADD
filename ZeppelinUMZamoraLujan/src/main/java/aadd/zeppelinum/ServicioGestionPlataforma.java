@@ -460,5 +460,9 @@ public class ServicioGestionPlataforma {
 	    }
 	}
 	
+	public List<RestauranteDTO> getRestauranteByResponsable(Integer id) {
+		return RestauranteDAO.getRestauranteDAO().findByUser(id);
+	}
+	
 
 }

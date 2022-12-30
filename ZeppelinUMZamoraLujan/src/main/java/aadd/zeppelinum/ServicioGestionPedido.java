@@ -171,6 +171,33 @@ public class ServicioGestionPedido {
 		}
 		return pedidosDTO;
 	}
+	
+	public List<PedidoDTO> findPedidoByRestaurante(Integer id) {
+		PedidoDAO pedidoDAO = PedidoDAO.getPedidoDAO();
+		List<Pedido> pedidos = pedidoDAO.findByRestaurante(id);
+		List<PedidoDTO> pedidosDTO = new ArrayList<>();
+		int cont = 1;
+		for (Pedido p : pedidos) {
+			Restaurante r = RestauranteDAO.getRestauranteDAO().findById(p.getRestaurante());
+			List<ItemPedido> listItem = ItemPedidoDAO.getItemPedidoDAO().findByPedido(p.getId());
+			List<EstadoPedido> listEstado = EstadoPedidoDAO.getEstadopedidoDAO().findByPedido(p.getId());
+			Usuario repartidor = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+			PedidoDTO pedidoDTO = new PedidoDTO();
+			pedidoDTO.setId(cont);
+			pedidoDTO.setIdReal(p.getId());
+			pedidoDTO.setNombreRestaurante(r.getNombre());
+			pedidoDTO.setFechaHora(p.getFechaHora());
+			pedidoDTO.setDireccion(p.getDireccion());
+			pedidoDTO.setImporte(p.getImporte());
+			pedidoDTO.setComentario(p.getComentario());
+			pedidoDTO.setListaItems(listItem);
+			pedidoDTO.setListaEstados(listEstado);
+			pedidoDTO.setNombreRepartidor(repartidor.getApellidos() + ", " + repartidor.getNombre());
+			cont++;
+			pedidosDTO.add(pedidoDTO);
+		}
+		return pedidosDTO;
+	}
 
 	public TipoEstado avanzarEstado(ObjectId id) {
 		EstadoPedidoDAO estadoPedidoDAO = EstadoPedidoDAO.getEstadopedidoDAO();

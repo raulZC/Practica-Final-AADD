@@ -148,8 +148,7 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
          } catch (RuntimeException re) {
              throw re;
          }
-    	
-	
-    	
     }
+    
+    
 }

@@ -73,30 +73,44 @@ public class PedidoListWeb implements Serializable {
 	}
 
 	public String getNombreRestaurante() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getNombreRestaurante();
 	}
 
 	public String getFechaHora() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getFechaHora();
 	}
 
 	public String getDireccion() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getDireccion();
 	}
 
 	public String getImporte() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getImporte() + " €";
 	}
 
 	public String getNombreRepartidor() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getNombreRepartidor();
 	}
 
 	public String getComentario() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		return listaPedidosDTO.get(id).getComentario();
 	}
 
 	public List<ItemPedidoDTO> getListaItems() {
+		if (listaPedidosDTO.isEmpty())
+			return null;
 		List<ItemPedidoDTO> lista = new ArrayList<ItemPedidoDTO>();
 		List<ItemPedido> listaItem = listaPedidosDTO.get(id).getListaItems();
 		for (ItemPedido itemPedido : listaItem) {
