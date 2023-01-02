@@ -108,8 +108,6 @@ public class PedidoDTO implements Serializable {
 
 	public String getEstadoActual() {
 		Collections.sort(listaEstados);
-		if (listaEstados.size() == 0)
-			return null;
 		return listaEstados.get(listaEstados.size() - 1).getEstado();
 	}
 
@@ -124,5 +122,7 @@ public class PedidoDTO implements Serializable {
 	public void setIdReal(ObjectId idReal) {
 		this.idReal = idReal;
 	}
+	
+	
 
 }

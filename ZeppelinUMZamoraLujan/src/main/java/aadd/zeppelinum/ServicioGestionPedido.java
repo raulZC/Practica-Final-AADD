@@ -141,8 +141,7 @@ public class ServicioGestionPedido {
 			itemPedidoDAO.crearItemPedido(itemPedido.getPlato(), pedido.getId(), itemPedido.getCantidad(),
 					itemPedido.getCantidad() * itemPedido.getPrecioTotal());
 		}
-		zeppelinumRemoto.pedidoIniciado(pedido.getId().toString());
-		zeppelinumRemoto.penalizacionRestaurante(pedido.getId().toString());
+		zeppelinumRemoto.pedidoIniciado(pedido.toString());
 		return true;
 	}
 
@@ -217,7 +216,6 @@ public class ServicioGestionPedido {
 			return TipoEstado.PREPARADO;
 		case PREPARADO:
 			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.RECOGIDO);
-			zeppelinumRemoto.pedidoRecogido(estados.get(estados.size() - 1).getPedido().toString());
 			return TipoEstado.RECOGIDO;
 		default:
 			return TipoEstado.ERROR;
