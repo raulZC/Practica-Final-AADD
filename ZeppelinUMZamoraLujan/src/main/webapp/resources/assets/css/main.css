@@ -2974,4 +2974,42 @@ input, select, textarea {
 
 }
 
+.ui-button-incidencia {
+	
+	background-image:  url("#{resource['assets/css/images/incidencia-icon.svg']}") !important;
+	background-size: 80% !important;
+	border: none !important;
+	background-color:#4f40ff !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-button-incidencia:hover {
+	
+	
+	background-color:#261ba6 !important;
+
+}
+
+.ui-button-incidencia:disabled {
+	
+	background-color:#8b84e1 !important;
+	opacity: 0.5
+}
+
+.ui-button-crear-incidencia{
+	
+	 float: right;
+	 background-color:rgb(213, 35, 73) !important; 
+	 border-color:rgb(213, 35, 73) !important;
+}
+.ui-button-crear-incidencia:hover{
+	
+	 
+	 background-color: rgb(159 34 61) !important; 
+	 
+}
+
 	

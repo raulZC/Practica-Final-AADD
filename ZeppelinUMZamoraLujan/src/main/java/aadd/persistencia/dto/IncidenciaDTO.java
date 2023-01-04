@@ -3,6 +3,7 @@ package aadd.persistencia.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.Usuario;
 
 public class IncidenciaDTO implements Serializable {
@@ -14,9 +15,10 @@ public class IncidenciaDTO implements Serializable {
 	protected LocalDate fechaCierre;
 	protected String comentarioCierre;
 	protected Usuario usuario;
+	protected Restaurante restaurante;
 	
 	public IncidenciaDTO(Integer id, LocalDate fechaCreacion, String descripcion, LocalDate fechaCierre,
-			String comentarioCierre,Usuario usuario) {
+			String comentarioCierre,Usuario usuario, Restaurante restaurante) {
 		super();
 		this.id = id;
 		this.fechaCreacion = fechaCreacion;
@@ -24,6 +26,7 @@ public class IncidenciaDTO implements Serializable {
 		this.fechaCierre = fechaCierre;
 		this.comentarioCierre = comentarioCierre;
 		this.usuario = usuario;
+		this.restaurante = restaurante;
 	}
 
 	
@@ -74,6 +77,15 @@ public class IncidenciaDTO implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Restaurante getRestaurante() {
+		return restaurante;
+	}
+
+
+	public void setRestaurante(Restaurante restaurante) {
+		this.restaurante = restaurante;
 	}
 
 

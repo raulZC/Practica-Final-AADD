@@ -13,8 +13,6 @@ import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.EntityManagerHelper;
 import aadd.persistencia.jpa.bean.Incidencia;
-import aadd.persistencia.jpa.bean.TipoUsuario;
-import aadd.persistencia.jpa.bean.Usuario;
 
 public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
 
@@ -33,7 +31,7 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
     public List<IncidenciaDTO> transformarToDTO(List<Incidencia> incidencias) {
         List<IncidenciaDTO> inc = new ArrayList<IncidenciaDTO>();
         for (Incidencia i : incidencias) {
-        	inc.add(new IncidenciaDTO(i.getId(), i.getFechaCreacion(), i.getDescripcion(), i.getFechaCierre(), i.getComentarioCierre(),i.getUsuario()));
+        	inc.add(new IncidenciaDTO(i.getId(), i.getFechaCreacion(), i.getDescripcion(), i.getFechaCierre(), i.getComentarioCierre(),i.getUsuario(),i.getRestaurante()));
         }
         return inc;
     }
@@ -64,10 +62,11 @@ public class IncidenciaDAO extends ExtensionDAO<Incidencia> {
     }
 
     
-    public List<IncidenciaDTO> findNoCerradas(){
+    public List<IncidenciaDTO> findNoCerradas(Integer idRestaurante){
     	
     	try {
             Query query = EntityManagerHelper.getEntityManager().createNamedQuery("Incidencia.findNoCerradas");
+            query.setParameter("idRestaurante", idRestaurante);
             return transformarToDTO(query.getResultList());
         } catch (RuntimeException re) {
             throw re;

@@ -13,12 +13,15 @@ import javax.persistence.EntityManager;
 
 import org.bson.types.ObjectId;
 
+import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.OpinionDTO;
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.jpa.EntityManagerHelper;
+import aadd.persistencia.jpa.bean.Incidencia;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoEstado;
 import aadd.persistencia.jpa.bean.Usuario;
+import aadd.persistencia.jpa.dao.IncidenciaDAO;
 import aadd.persistencia.jpa.dao.RestauranteDAO;
 import aadd.persistencia.jpa.dao.UsuarioDAO;
 import aadd.persistencia.mongo.bean.EstadoPedido;
@@ -166,6 +169,9 @@ public class ServicioGestionPedido {
 			pedidoDTO.setListaItems(listItem);
 			pedidoDTO.setListaEstados(listEstado);
 			pedidoDTO.setNombreRepartidor(repartidor.getApellidos() + ", " + repartidor.getNombre());
+			pedidoDTO.setCliente(p.getCliente());
+			pedidoDTO.setRestaurante(p.getRestaurante());
+			pedidoDTO.setIncidencia(p.getIncidencia());
 			cont++;
 			pedidosDTO.add(pedidoDTO);
 		}
@@ -193,6 +199,8 @@ public class ServicioGestionPedido {
 			pedidoDTO.setListaItems(listItem);
 			pedidoDTO.setListaEstados(listEstado);
 			pedidoDTO.setNombreRepartidor(repartidor.getApellidos() + ", " + repartidor.getNombre());
+			pedidoDTO.setCliente(p.getCliente());
+			pedidoDTO.setRestaurante(p.getRestaurante());
 			cont++;
 			pedidosDTO.add(pedidoDTO);
 		}
@@ -236,4 +244,71 @@ public class ServicioGestionPedido {
 		estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.CANCELADO);
 		return TipoEstado.CANCELADO;
 	}
+	
+	public Integer crearIncidencia(String descripcion, Integer idUsuario, Integer idRestaurante, ObjectId idPedido) {
+	    EntityManager em = EntityManagerHelper.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+
+	        //Buscar el pedido y si ya tiene una incidencia devolver null
+	        System.out.println("Pedido con id: " + idPedido);
+	        Pedido pedido = PedidoDAO.getPedidoDAO().findByID(idPedido);
+	        
+	        if(pedido.getIncidencia() != null) {
+	        	
+	        	return null;
+	        }
+	        
+	        // Buscar el usuario
+	        Usuario usuario = UsuarioDAO.getUsuarioDAO().findById(idUsuario);
+	        if (usuario == null){
+	            // Si no se encuentra el usuario, lanzar una excepción
+	            throw new Exception("No se encontró el usuario con ID " + idUsuario);
+	        }
+	        // Buscar el restaurante
+	        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
+	        if (restaurante == null){
+	            // Si no se encuentra el restaurante, lanzar una excepción
+	            throw new Exception("No se encontró el restaurante con ID " + idRestaurante);
+	        }
+	    
+	        // Crear la incidencia
+	        Incidencia incidencia = new Incidencia();
+	        incidencia.setFechaCreacion(LocalDate.now());
+	        incidencia.setDescripcion(descripcion);
+	        incidencia.setUsuario(usuario);
+	        incidencia.setRestaurante(restaurante);
+	        incidencia.setPedido(idPedido.toString());
+	     // Agregamos la incidencia a la lista de incidencias del usuario y del restaurante
+	        usuario.getIncidencias().add(incidencia);
+	        restaurante.getIncidencias().add(incidencia);
+
+	     // Guardamos los cambios en la base de datos
+	        IncidenciaDAO.getIncidenciaDAO().save(incidencia, em);
+	        UsuarioDAO.getUsuarioDAO().update(usuario, em);
+	        RestauranteDAO.getRestauranteDAO().update(restaurante, em);
+
+	        
+	        
+
+	        em.getTransaction().commit();
+	        PedidoDAO.getPedidoDAO().update(idPedido, "incidencia", incidencia.getId());
+	        return incidencia.getId();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    } finally {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        em.close();
+	        
+	    }
+	}
+	/*
+	public List<IncidenciaDTO> getIncidenciasNoCerradas(){
+		
+		return IncidenciaDAO.getIncidenciaDAO().findNoCerradas();
+		
+	}*/
 }

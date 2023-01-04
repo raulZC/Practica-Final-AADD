@@ -28,6 +28,9 @@ public class PedidoDTO implements Serializable {
 	protected List<ItemPedido> listaItems;
 	protected String comentario;
 	protected String nombreRepartidor;
+	protected Integer cliente;
+	protected Integer restaurante;
+	protected Integer incidencia;
 
 	public PedidoDTO() {
 	}
@@ -122,6 +125,33 @@ public class PedidoDTO implements Serializable {
 	public void setIdReal(ObjectId idReal) {
 		this.idReal = idReal;
 	}
+	
+	
+
+	public Integer getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Integer cliente) {
+		this.cliente = cliente;
+	}
+
+	public Integer getRestaurante() {
+		return restaurante;
+	}
+
+	public void setRestaurante(Integer restaurante) {
+		this.restaurante = restaurante;
+	}
+
+	public Integer getIncidencia() {
+		return incidencia;
+	}
+
+	public void setIncidencia(Integer incidencia) {
+		this.incidencia = incidencia;
+	}
+	
 	
 	
 

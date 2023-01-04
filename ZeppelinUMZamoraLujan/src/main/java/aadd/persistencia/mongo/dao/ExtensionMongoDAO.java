@@ -3,6 +3,7 @@ package aadd.persistencia.mongo.dao;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.MongoClientSettings;
@@ -10,6 +11,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
@@ -46,4 +49,11 @@ public abstract class ExtensionMongoDAO<T> {
 			return result.getInsertedId().asObjectId().getValue();
 		return null;
 	}
+	
+	public void update(ObjectId id, String campo, Object valor) {
+		  Bson query = Filters.eq("_id", id);
+		  Bson update = Updates.set(campo, valor);
+		  collection.updateOne(query, update);
+		}
+	
 }

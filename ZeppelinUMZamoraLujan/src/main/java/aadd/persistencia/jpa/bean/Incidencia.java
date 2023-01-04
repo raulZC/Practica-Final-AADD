@@ -14,10 +14,14 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.bson.types.ObjectId;
+
+import aadd.persistencia.mongo.bean.Pedido;
+
 @Entity
 @Table(name = "incidencia")
 @NamedQueries({
-	@NamedQuery(name = "Incidencia.findNoCerradas", query = " SELECT i FROM Incidencia i WHERE i.fechaCierre IS NULL")})
+	@NamedQuery(name = "Incidencia.findNoCerradas", query = " SELECT i FROM Incidencia i WHERE i.fechaCierre IS NULL and i.restaurante.id = :idRestaurante")})
 public class Incidencia {
 
 	@Id
@@ -40,6 +44,9 @@ public class Incidencia {
 	@ManyToOne
 	@JoinColumn(name = "restaurante_id")
 	private Restaurante restaurante;
+	
+	@JoinColumn(name = "pedido_id")
+	private String pedido;
 	
 	public int getId() {
 		return id;
@@ -82,6 +89,12 @@ public class Incidencia {
 	}
 	public void setRestaurante(Restaurante restaurante) {
 		this.restaurante = restaurante;
+	}
+	public String getPedido() {
+		return pedido;
+	}
+	public void setPedido(String pedido) {
+		this.pedido = pedido;
 	}
 
 }

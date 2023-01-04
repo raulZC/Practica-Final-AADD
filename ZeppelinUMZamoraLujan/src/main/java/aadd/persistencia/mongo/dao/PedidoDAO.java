@@ -41,6 +41,7 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 		ped.setFechaEsperado(fechaEsperado);
 		ped.setComentario(comentario);
 		ped.setImporte(importe);
+		ped.setIncidencia(null);
 		collection.insertOne(ped);
 		return ped;
 	}
@@ -78,7 +79,7 @@ public class PedidoDAO extends ExtensionMongoDAO<Pedido> {
 	}
 	
 	public Pedido findByID(ObjectId id) {
-		Bson query = Filters.eq("id", id);
+		Bson query = Filters.eq("_id", id);
 		FindIterable<Pedido> resultados = collection.find(query);
 		MongoCursor<Pedido> it = resultados.iterator();
 		return it.tryNext();

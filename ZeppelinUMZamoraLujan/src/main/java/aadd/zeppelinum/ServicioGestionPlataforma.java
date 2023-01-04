@@ -17,7 +17,6 @@ import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
 import aadd.persistencia.jpa.EntityManagerHelper;
 import aadd.persistencia.jpa.bean.CategoriaRestaurante;
-import aadd.persistencia.jpa.bean.Incidencia;
 import aadd.persistencia.jpa.bean.Plato;
 import aadd.persistencia.jpa.bean.Restaurante;
 import aadd.persistencia.jpa.bean.TipoUsuario;
@@ -365,53 +364,7 @@ public class ServicioGestionPlataforma {
 	    }
 	}
 	
-	public Integer crearIncidencia(String descripcion, Integer idUsuario, Integer idRestaurante) {
-	    EntityManager em = EntityManagerHelper.getEntityManager();
-	    try {
-	        em.getTransaction().begin();
-
-	        // Buscar el usuario
-	        Usuario usuario = UsuarioDAO.getUsuarioDAO().findById(idUsuario);
-	        if (usuario == null){
-	            // Si no se encuentra el usuario, lanzar una excepción
-	            throw new Exception("No se encontró el usuario con ID " + idUsuario);
-	        }
-	        // Buscar el restaurante
-	        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
-	        if (restaurante == null){
-	            // Si no se encuentra el restaurante, lanzar una excepción
-	            throw new Exception("No se encontró el restaurante con ID " + idRestaurante);
-	        }
 	
-
-	        // Crear la incidencia
-	        Incidencia incidencia = new Incidencia();
-	        incidencia.setFechaCreacion(LocalDate.now());
-	        incidencia.setDescripcion(descripcion);
-	        incidencia.setUsuario(usuario);
-	        incidencia.setRestaurante(restaurante);
-
-	     // Agregamos la incidencia a la lista de incidencias del usuario y del restaurante
-	        usuario.getIncidencias().add(incidencia);
-	        restaurante.getIncidencias().add(incidencia);
-
-	     // Guardamos los cambios en la base de datos
-	        IncidenciaDAO.getIncidenciaDAO().save(incidencia, em);
-	        UsuarioDAO.getUsuarioDAO().update(usuario, em);
-	        RestauranteDAO.getRestauranteDAO().update(restaurante, em);
-
-	        em.getTransaction().commit();
-	        return incidencia.getId();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return null;
-	    } finally {
-	        if (em.getTransaction().isActive()) {
-	            em.getTransaction().rollback();
-	        }
-	        em.close();
-	    }
-	}
 	
 	public List<IncidenciaDTO> getIncidenciasByUsuario(Integer idUsuario){
 		
@@ -419,11 +372,7 @@ public class ServicioGestionPlataforma {
 	}
 	
 	
-	public List<IncidenciaDTO> getIncidenciasNoCerradas(){
-		
-		return IncidenciaDAO.getIncidenciaDAO().findNoCerradas();
-		
-	}
+
 	
 	public List<UsuarioDTO> getUsRestauranteNoVal(){
 		

@@ -16,9 +16,9 @@ Listado de Mis Pedidos
 			</h2>
 			<p:dataTable var="pedido" style="prueba"
 				value="#{pedidoListWeb.listaPedidosDTO}" rows="5" id="tabla_header"
-				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}" 
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-				<p:column headerText="Nº">
+				<p:columns headerText="Nº">
 					<h:outputText value="#{pedido.id}" />
 				</p:column>
 				<p:column headerText="Restaurante">
@@ -38,6 +38,16 @@ Listado de Mis Pedidos
 						actionListener="#{pedidoListWeb.onPedidoSelect(pedido.id)}">
 						<h:outputText value="Ver Detalle" />
 					</h:commandLink>
+
+				</p:column>
+				<p:column>
+					<h:commandButton style="vertical-align: middle;"
+						disabled="#{pedido.incidencia != null}"
+						title="#{pedido.incidencia == null ? 'Crear incidencia' : 'Incidencia ya enviada'}"
+						styleClass="ui-button-incidencia"
+						actionListener="#{pedidoListWeb.onCrearIncidenciaSelect(pedido.id)}">
+
+					</h:commandButton>
 				</p:column>
 			</p:dataTable>
 
@@ -73,6 +83,41 @@ Listado de Mis Pedidos
 				</p:outputPanel>
 			</p:dialog>
 
+			<p:dialog header="Crear incidencia" widgetVar="crearIncidencia"
+				showEffect="fade" width="700" height="350" modal="true"
+				style="overflow: hidden !important;">
+				
+					<div style="align-text:center">
+						<p:outputLabel value="Descripción de la incidencia: " />
+
+
+
+						<p:inputTextarea style="box-sizing: border-box;margin-bottom:2rem;min-width: 25rem;" autoResize="false" rows="5"
+							value="#{pedidoListWeb.comentarioInc}"></p:inputTextarea>
+					</div>
+
+				
+
+				<p:commandButton value="Cerrar" style="margin-right:5px"
+					onclick="PF('crearIncidencia').hide();" />
+				<p:commandButton value="Crear" styleClass="ui-button-crear-incidencia"
+					actionListener="#{pedidoListWeb.crearIncidencia()}"
+					oncomplete="PF('crearIncidencia').hide()" update="tabla_header"></p:commandButton>
+			</p:dialog>
+			
+		<p:dialog header="Error la realizar la incidencia" widgetVar="errorIncidencia"
+			width="650">
+			<p:outputPanel style="margin: 10px;">
+				<h:outputText value="Se ha producido un error al intentar crear la incidencia, prueba más tarde o contacte con el administrador." />
+			</p:outputPanel>
+		</p:dialog>
+		
+		<p:dialog header="Incidencia enviada" widgetVar="incidenciaEnviada"
+			width="650">
+			<p:outputPanel style="margin: 10px;">
+				<h:outputText value="Su incidencia se ha enviado correctamente"/>
+			</p:outputPanel>
+		</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

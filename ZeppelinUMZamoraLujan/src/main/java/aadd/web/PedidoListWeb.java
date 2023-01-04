@@ -36,6 +36,7 @@ public class PedidoListWeb implements Serializable {
 	private List<PedidoDTO> listaPedidosDTO;
 	private PedidoDTO pedido;
 	private int id;
+	private String comentarioInc;
 
 	public PedidoListWeb() {
 		servicioGestion = ServicioGestionPlataforma.getServicioGestionPlataforma();
@@ -49,6 +50,30 @@ public class PedidoListWeb implements Serializable {
 		pedido = listaPedidosDTO.get(id - 1);
 		PrimeFaces current = PrimeFaces.current();
 		current.executeScript("PF('detallePedido').show();");
+	}
+	
+	public void onCrearIncidenciaSelect(int id) {
+		
+		this.id = id - 1;
+		pedido = listaPedidosDTO.get(id - 1);
+		PrimeFaces current = PrimeFaces.current();
+		current.executeScript("PF('crearIncidencia').show();");
+		
+	}
+	public void crearIncidencia() {
+		PrimeFaces current = PrimeFaces.current();
+		Integer inc = servicioPedido.crearIncidencia(comentarioInc,pedido.getCliente(),pedido.getRestaurante(),pedido.getIdReal());
+		if(inc != null) {
+			
+			current.executeScript("PF('incidenciaEnviada').show();");
+		}else {
+			
+			
+			current.executeScript("PF('errorIncidencia').show();");
+		}
+		
+		
+	
 	}
 
 	public List<PedidoDTO> getListaPedidosDTO() {
@@ -119,6 +144,14 @@ public class PedidoListWeb implements Serializable {
 					itemPedido.getPrecioTotal()));
 		}
 		return lista;
+	}
+
+	public String getComentarioInc() {
+		return comentarioInc;
+	}
+
+	public void setComentarioInc(String comentarioInc) {
+		this.comentarioInc = comentarioInc;
 	}
 
 }
