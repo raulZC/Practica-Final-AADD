@@ -13,7 +13,9 @@ import org.primefaces.PrimeFaces;
 
 import aadd.persistencia.dto.ItemPedidoDTO;
 import aadd.persistencia.dto.PedidoDTO;
+import aadd.persistencia.jpa.bean.Incidencia;
 import aadd.persistencia.jpa.bean.Plato;
+import aadd.persistencia.jpa.dao.IncidenciaDAO;
 import aadd.persistencia.mongo.bean.ItemPedido;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
@@ -37,6 +39,7 @@ public class PedidoListWeb implements Serializable {
 	private PedidoDTO pedido;
 	private int id;
 	private String comentarioInc;
+	private Incidencia incidenciaSelected;
 
 	public PedidoListWeb() {
 		servicioGestion = ServicioGestionPlataforma.getServicioGestionPlataforma();
@@ -60,6 +63,17 @@ public class PedidoListWeb implements Serializable {
 		current.executeScript("PF('crearIncidencia').show();");
 		
 	}
+	public void onVerResolSelect(Integer idPedio) {
+		pedido = listaPedidosDTO.get(idPedio - 1);
+		
+		if(pedido.getIncidencia()!=null) {
+			
+			incidenciaSelected = IncidenciaDAO.getIncidenciaDAO().findById(pedido.getIncidencia());
+			PrimeFaces current = PrimeFaces.current();
+			current.executeScript("PF('verResolIncidencia').show();");
+		}
+	}
+	
 	public void crearIncidencia() {
 		PrimeFaces current = PrimeFaces.current();
 		Integer inc = servicioPedido.crearIncidencia(comentarioInc,pedido.getCliente(),pedido.getRestaurante(),pedido.getIdReal());
@@ -152,6 +166,14 @@ public class PedidoListWeb implements Serializable {
 
 	public void setComentarioInc(String comentarioInc) {
 		this.comentarioInc = comentarioInc;
+	}
+
+	public Incidencia getIncidenciaSelected() {
+		return incidenciaSelected;
+	}
+
+	public void setIncidenciaSelected(Incidencia incidenciaSelected) {
+		this.incidenciaSelected = incidenciaSelected;
 	}
 
 }

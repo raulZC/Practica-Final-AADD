@@ -16,9 +16,9 @@ Listado de Mis Pedidos
 			</h2>
 			<p:dataTable var="pedido" style="prueba"
 				value="#{pedidoListWeb.listaPedidosDTO}" rows="5" id="tabla_header"
-				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}" 
+				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-				<p:columns headerText="Nº">
+				<p:column headerText="Nº">
 					<h:outputText value="#{pedido.id}" />
 				</p:column>
 				<p:column headerText="Restaurante">
@@ -48,6 +48,16 @@ Listado de Mis Pedidos
 						actionListener="#{pedidoListWeb.onCrearIncidenciaSelect(pedido.id)}">
 
 					</h:commandButton>
+				</p:column>
+				<p:column>
+					<p:commandButton style="margin-left: 2rem;justify-content:center"
+						disabled="#{pedido.incidencia == null}" value=""
+						title="Ver resolución incidencia}"
+						styleClass="ui-button-ver-resolucion"
+						actionListener="#{pedidoListWeb.onVerResolSelect(pedido.id)}"
+						update="pedidos:resolIncidenciaDialog">
+
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 
@@ -86,38 +96,81 @@ Listado de Mis Pedidos
 			<p:dialog header="Crear incidencia" widgetVar="crearIncidencia"
 				showEffect="fade" width="700" height="350" modal="true"
 				style="overflow: hidden !important;">
-				
-					<div style="align-text:center">
-						<p:outputLabel value="Descripción de la incidencia: " />
+
+				<div style="align-text: center">
+					<p:outputLabel value="Descripción de la incidencia: " />
 
 
 
-						<p:inputTextarea style="box-sizing: border-box;margin-bottom:2rem;min-width: 25rem;" autoResize="false" rows="5"
-							value="#{pedidoListWeb.comentarioInc}"></p:inputTextarea>
-					</div>
+					<p:inputTextarea
+						style="box-sizing: border-box;margin-bottom:2rem;min-width: 25rem;"
+						autoResize="false" rows="5" value="#{pedidoListWeb.comentarioInc}"></p:inputTextarea>
+				</div>
 
-				
+
 
 				<p:commandButton value="Cerrar" style="margin-right:5px"
 					onclick="PF('crearIncidencia').hide();" />
-				<p:commandButton value="Crear" styleClass="ui-button-crear-incidencia"
+				<p:commandButton value="Crear"
+					styleClass="ui-button-crear-incidencia"
 					actionListener="#{pedidoListWeb.crearIncidencia()}"
 					oncomplete="PF('crearIncidencia').hide()" update="tabla_header"></p:commandButton>
 			</p:dialog>
-			
-		<p:dialog header="Error la realizar la incidencia" widgetVar="errorIncidencia"
-			width="650">
-			<p:outputPanel style="margin: 10px;">
-				<h:outputText value="Se ha producido un error al intentar crear la incidencia, prueba más tarde o contacte con el administrador." />
-			</p:outputPanel>
-		</p:dialog>
-		
-		<p:dialog header="Incidencia enviada" widgetVar="incidenciaEnviada"
-			width="650">
-			<p:outputPanel style="margin: 10px;">
-				<h:outputText value="Su incidencia se ha enviado correctamente"/>
-			</p:outputPanel>
-		</p:dialog>
+
+			<p:dialog header="Error la realizar la incidencia"
+				widgetVar="errorIncidencia" width="650">
+				<p:outputPanel style="margin: 10px;">
+					<h:outputText
+						value="Se ha producido un error al intentar crear la incidencia, prueba más tarde o contacte con el administrador." />
+				</p:outputPanel>
+			</p:dialog>
+
+			<p:dialog header="Incidencia enviada" widgetVar="incidenciaEnviada"
+				width="650">
+				<p:outputPanel style="margin: 10px;">
+					<h:outputText value="Su incidencia se ha enviado correctamente" />
+				</p:outputPanel>
+			</p:dialog>
+
+
+			<p:dialog header="Resolución de la incidencia"
+				widgetVar="verResolIncidencia" id="resolIncidenciaDialog"
+				showEffect="fade" width="700" height="500" modal="true">
+				<div style="align-text: center">
+					<p:outputLabel value="Descripción de la incidencia: " />
+					<div>
+						<p
+							style="border: 1px solid #000000; padding: 1rem; min-height: 7rem">#{pedidoListWeb.incidenciaSelected.descripcion}</p>
+					</div>
+				</div>
+				<div style="align-text: center">
+
+					<p:outputLabel value="Comentario cierre incidencia: " />
+
+					<div>
+						<p
+							style="border: 1px solid #000000; padding: 1rem; min-height: 7rem">#{pedidoListWeb.incidenciaSelected.comentarioCierre}</p>
+					</div>
+				</div>
+				<div
+					style="text-align: center; justify-content: space-evenly; display: flex; margin: auto; flex-direction: column; align-items: center; flex-wrap: wrap; align-content: space-around;">
+					<p:outputLabel value="Estado de la incidencia: " />
+					<ui:fragment style="vertical-align: middle;"
+						rendered="#{pedidoListWeb.incidenciaSelected.fechaCierre != null}">
+						<p:graphicImage title="Incidencia cerrada"
+							style="vertical-align: middle; width:4rem " class="ui-incidencia-cerrada" />
+					</ui:fragment>
+
+					<ui:fragment
+						rendered="#{pedidoListWeb.incidenciaSelected.fechaCierre == null}">
+						<p:graphicImage title="Incidencia abierta"
+							style="vertical-align: middle;width:4rem" class="ui-incidencia-abierta" />
+					</ui:fragment>
+					<p:outputLabel value="#{pedidoListWeb.incidenciaSelected.fechaCierre == null? 'Abierta':'Cerrada'}" />
+
+				</div>
+
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

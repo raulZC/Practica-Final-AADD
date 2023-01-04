@@ -45,7 +45,7 @@ Mis restaurantes
 
 					<h:panelGrid columns="2">
 						<h:panelGroup>
-							<p:dataTable var="restaurante" style="min-width: 25rem"
+							<p:dataTable var="restaurante" style="min-width: 30rem"
 								id="dt_misRest" value="#{misRest.misRestaurantes}" rows="5"
 								scrollHeight="50rem"
 								emptyMessage="No se han encontrado restaurantes"
@@ -70,7 +70,16 @@ Mis restaurantes
 											target="#{misRest.restauranteSelec}" />
 
 									</p:commandButton>
+									<h:outputText value=" " />
+									<p:commandButton icon="fa " value=""
+										title="Ver incidencias"
+										styleClass="ui-button-ver-incidencias"
+										process="@this" action="#{misRest.clickOnVerIncidencias()}"
+										update="restaurantes:panelG_menu">
+										<f:setPropertyActionListener value="#{restaurante}"
+											target="#{misRest.restauranteSelec}" />
 
+									</p:commandButton>
 
 								</p:column>
 
@@ -194,10 +203,6 @@ Mis restaurantes
 										style="font-size: 1.5rem; font-weight: bolder; color: green; margin-left: 1rem" />
 
 								</p:outputPanel>
-
-
-
-
 
 							</p:panelGrid>
 

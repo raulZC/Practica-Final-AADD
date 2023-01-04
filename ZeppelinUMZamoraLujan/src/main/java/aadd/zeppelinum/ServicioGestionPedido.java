@@ -305,10 +305,98 @@ public class ServicioGestionPedido {
 	        
 	    }
 	}
-	/*
-	public List<IncidenciaDTO> getIncidenciasNoCerradas(){
+	
+	public List<IncidenciaDTO> getIncidenciasNoCerradasByRest(Integer restauranteId){
 		
-		return IncidenciaDAO.getIncidenciaDAO().findNoCerradas();
+		return IncidenciaDAO.getIncidenciaDAO().findNoCerradas(restauranteId);
+	
+	}
+	
+	public List<IncidenciaDTO> getIncidenciasByRest(Integer restauranteId){
+		System.out.println("Buscando incidencias restaurante: " + restauranteId);
+		return IncidenciaDAO.getIncidenciaDAO().findByRestaurante(restauranteId);
+	}
+	
+	public PedidoDTO getPedidoByIncidencia(Integer idIncidencia) {
 		
-	}*/
+		Pedido p = PedidoDAO.getPedidoDAO().findByIncidencia(idIncidencia);;
+		Restaurante r = RestauranteDAO.getRestauranteDAO().findById(p.getRestaurante());
+		List<ItemPedido> listItem = ItemPedidoDAO.getItemPedidoDAO().findByPedido(p.getId());
+		List<EstadoPedido> listEstado = EstadoPedidoDAO.getEstadopedidoDAO().findByPedido(p.getId());
+		Usuario repartidor = UsuarioDAO.getUsuarioDAO().findById(p.getRepartidor());
+		PedidoDTO pedidoDTO = new PedidoDTO();
+		pedidoDTO.setId(1);
+		pedidoDTO.setIdReal(p.getId());
+		pedidoDTO.setNombreRestaurante(r.getNombre());
+		pedidoDTO.setFechaHora(p.getFechaHora());
+		pedidoDTO.setDireccion(p.getDireccion());
+		pedidoDTO.setImporte(p.getImporte());
+		pedidoDTO.setComentario(p.getComentario());
+		pedidoDTO.setListaItems(listItem);
+		pedidoDTO.setListaEstados(listEstado);
+		pedidoDTO.setNombreRepartidor(repartidor.getApellidos() + ", " + repartidor.getNombre());
+		pedidoDTO.setCliente(p.getCliente());
+		pedidoDTO.setRestaurante(p.getRestaurante());
+		pedidoDTO.setIncidencia(p.getIncidencia());
+		return pedidoDTO;
+	}
+	
+	public Integer cerrarIncidencia(Integer idIncidencia,String comentarioCierre) {
+		
+		EntityManager em = EntityManagerHelper.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+	        
+ 
+	      //Buscar incidencia
+	        Incidencia incidencia = IncidenciaDAO.getIncidenciaDAO().findById(idIncidencia);
+	       
+	
+	        if (incidencia == null){
+	            // Si no se encuentra el usuario, lanzar una excepción
+	            throw new Exception("No se encontró la incidencia con ID " + idIncidencia);
+	        }
+	        
+	        incidencia.setFechaCierre(LocalDate.now());
+	        incidencia.setComentarioCierre(comentarioCierre);
+	        //Cerrar la incidencia con el comentario y la fecha actual
+	        // Buscar el usuario
+	        Usuario usuario = UsuarioDAO.getUsuarioDAO().findById(incidencia.getUsuario().getId());
+	        if (usuario == null){
+	            // Si no se encuentra el usuario, lanzar una excepción
+	            throw new Exception("No se encontró el usuario con ID " + incidencia.getUsuario().getId());
+	        }
+	        // Buscar el restaurante
+	        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(incidencia.getRestaurante().getId());
+	        if (restaurante == null){
+	            // Si no se encuentra el restaurante, lanzar una excepción
+	            throw new Exception("No se encontró el restaurante con ID " + incidencia.getRestaurante().getId());
+	        }
+	       
+	       
+	     //Agregamos la incidencia a la lista de incidencias del usuario y del restaurante
+	        usuario.getIncidencias().set(usuario.getIncidencias().indexOf(incidencia),incidencia);
+	        restaurante.getIncidencias().set(usuario.getIncidencias().indexOf(incidencia),incidencia);
+
+	     //Guardamos los cambios en la base de datos
+	        IncidenciaDAO.getIncidenciaDAO().update(incidencia, em);
+	  
+	        UsuarioDAO.getUsuarioDAO().update(usuario, em);
+	        RestauranteDAO.getRestauranteDAO().update(restaurante, em);
+
+	        em.getTransaction().commit();
+
+	        return incidencia.getId();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    } finally {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        em.close();
+	        
+	    }
+	}
+	
 }

@@ -3012,4 +3012,99 @@ input, select, textarea {
 	 
 }
 
+
+.ui-button-ver-incidencias {
+	
+	background-image:  url("#{resource['assets/css/images/ver-incidencias.svg']}") !important;
+	background-size: 100% !important;
+	border: none !important;
+	background-color: transparent !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-button-ver-incidencias:hover {
+	
+	
+	filter: brightness(0.9);
+
+}
+
+.ui-incidencia-abierta {
+	
+	background-image:  url("#{resource['assets/css/images/incidencia-abierta.png']}") !important;
+	background-size: 100% !important;
+	border: none !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-incidencia-cerrada {
+	
+	background-image:  url("#{resource['assets/css/images/incidencia-cerrada.png']}") !important;
+	background-size: 100% !important;
+	border: none !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+
+.ui-button-cerrar-incidencia {
+	
+	background-image:  url("#{resource['assets/css/images/cerrar-incidencia.svg']}") !important;
+	background-size: 100% !important;
+	border: none !important;
+	background-color:#4f40ff !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-button-cerrar-incidencia:hover {
+	
+	
+	background-color:#261ba6 !important;
+
+}
+.ui-button-cerrar-incidencia:disabled {
+	
+	background-color:#8b84e1 !important;
+	opacity: 0.5
+}
+
+.ui-button-ver-resolucion{
+	
+	background-image:  url("#{resource['assets/css/images/lupa.svg']}") !important;
+	background-size: 100% !important;
+	background-color: transparent !important;
+	border: none !important;
+	background-repeat:no-repeat !important;
+  	background-position: center !important;
+	min-width: 3rem !important;
+  	min-height: 3rem !important;
+	
+}
+.ui-button-ver-resolucion:hover {
+	
+	
+	filter: brightness(0.9);
+
+}
+.ui-button-ver-resolucion:disabled {
+	
+	opacity: 0.5
+}
+
+
+
+
+
+
 	

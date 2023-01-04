@@ -1,5 +1,6 @@
 package aadd.web.restaurante;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,8 +45,9 @@ public class MisRestaurantes implements Serializable {
 	public void init() {
 		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		misRestaurantes = servicio.getRestaurantesByUser(userSessionWeb.getUsuario().getId());
-		
+
 	}
+
 	public FacesContext getFacesContext() {
 		return facesContext;
 	}
@@ -93,7 +95,6 @@ public class MisRestaurantes implements Serializable {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-
 
 	public String getTitulo() {
 		return titulo;
@@ -191,46 +192,53 @@ public class MisRestaurantes implements Serializable {
 	public void eliminarPlato() {
 
 		if (platoSelect != null) {
-			
+
 			if (servicio.eliminarPlato(platoSelect.getId())) {
 
 				facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Plato eliminado", ""));
 				loadMenu();
 			}
-			
-			
+
 		} else {
 			facesContext.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al intentar eliminar el plato", ""));
-			
+
 		}
 	}
-	
-	
+
 	public void selectPlatoEdit() {
-		
-		if(platoSelect!=null) {
-			
-			id=platoSelect.getId();
+
+		if (platoSelect != null) {
+
+			id = platoSelect.getId();
 			titulo = platoSelect.getTitulo();
-			descripcion= platoSelect.getDescripcion();
-			precio=platoSelect.getPrecio();
-			disponibilidad=platoSelect.isDisponibilidad();
-			System.out.println(id+" "+titulo);
+			descripcion = platoSelect.getDescripcion();
+			precio = platoSelect.getPrecio();
+			disponibilidad = platoSelect.isDisponibilidad();
+			System.out.println(id + " " + titulo);
 		}
-		
-		
+
 	}
-	
+
 	public void updatePlato() {
-		
-		if(disponibilidad!=platoSelect.isDisponibilidad()) {
-			
+
+		if (disponibilidad != platoSelect.isDisponibilidad()) {
+
 			servicio.cambiarDispPlato(platoSelect.getId(), disponibilidad);
 			loadMenu();
 		}
+
+	}
+
+	public void clickOnVerIncidencias() {
 		
-		
-		
+		Integer restauranteSelectedId = restauranteSelec.getId();
+		try {
+			String contextoURL = facesContext.getExternalContext().getApplicationContextPath();
+			facesContext.getExternalContext()
+					.redirect(contextoURL + "/pedido/verIncidenciaRest.xhtml?id=" + restauranteSelectedId);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

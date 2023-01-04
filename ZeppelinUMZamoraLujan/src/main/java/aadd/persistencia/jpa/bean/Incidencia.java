@@ -21,7 +21,9 @@ import aadd.persistencia.mongo.bean.Pedido;
 @Entity
 @Table(name = "incidencia")
 @NamedQueries({
-	@NamedQuery(name = "Incidencia.findNoCerradas", query = " SELECT i FROM Incidencia i WHERE i.fechaCierre IS NULL and i.restaurante.id = :idRestaurante")})
+	@NamedQuery(name = "Incidencia.findNoCerradasRest", query = " SELECT i FROM Incidencia i WHERE i.fechaCierre IS NULL and i.restaurante.id = :idRestaurante"),
+	@NamedQuery(name = "Incidencia.findIncidenciasRest", query = " SELECT i FROM Incidencia i WHERE i.restaurante.id = :idRestaurante")
+})
 public class Incidencia {
 
 	@Id
