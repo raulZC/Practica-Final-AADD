@@ -10,8 +10,12 @@ import javax.persistence.EntityManager;
 import com.mongodb.client.model.geojson.Point;
 import com.mongodb.client.model.geojson.Position;
 
+import aadd.persistencia.dto.EstadisticaImporteDTO;
+import aadd.persistencia.dto.EstadisticaPedidoEstadosDTO;
 import aadd.persistencia.dto.EstadisticaOpinionDTO;
+import aadd.persistencia.dto.EstadisticaPedidosDTO;
 import aadd.persistencia.dto.IncidenciaDTO;
+import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.dto.PlatoDTO;
 import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.dto.UsuarioDTO;
@@ -295,6 +299,18 @@ public class ServicioGestionPlataforma {
 	}
 	public List<EstadisticaOpinionDTO> getEstadisticasOpinion(Integer idUsuario) {
 	    return zeppelinumRemoto.getEstadisticasOpinion(idUsuario);
+	}
+	
+	public List<EstadisticaPedidoEstadosDTO> getEstadisticasEstados(Integer idUsuario) {
+	    return zeppelinumRemoto.getEstadisticasEstados(idUsuario);
+	}
+	
+	public List<EstadisticaPedidosDTO> getEstadisticasPedidos(Integer idUsuario) {
+	    return zeppelinumRemoto.getEstadisticasPedidos(idUsuario);
+	}
+	
+	public List<EstadisticaImporteDTO> getEstadisticasImporte(Integer idUsuario) {
+	    return zeppelinumRemoto.getEstadisticasImporte(idUsuario);
 	}
 
 	public Integer getNumVisitas(Integer idUsuario) {

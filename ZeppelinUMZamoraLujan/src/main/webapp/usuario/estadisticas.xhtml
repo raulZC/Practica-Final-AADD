@@ -20,14 +20,14 @@ Estadísticas
 									<div class="ui-g-2">Número de visitas
 										#{estadisticasWeb.numVisitas}</div>
 									<div class="ui-g-4">
-										<p:panel header="Valoraciones">
+										<p:panel header= "#{estadisticasWeb.header1}">
 											<p:lineChart model="#{estadisticasWeb.lineModel}"
 												style="width: 100%; height: 300px;" />
 										</p:panel>
 									</div>
 									<div class="ui-g-4">
-										<p:panel header="Numero de Pedidos">
-											<p:lineChart model="#{estadisticasWeb.lineModel}"
+										<p:panel header="#{estadisticasWeb.header2}">
+											<p:lineChart model="#{estadisticasWeb.lineModel2}"
 												style="width: 100%; height: 300px;" />
 										</p:panel>
 									</div>

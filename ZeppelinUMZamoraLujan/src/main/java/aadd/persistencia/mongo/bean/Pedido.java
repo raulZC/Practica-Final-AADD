@@ -7,7 +7,7 @@ import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-public class Pedido implements Serializable {
+public class Pedido implements Serializable, Comparable<Pedido> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -120,6 +120,12 @@ public class Pedido implements Serializable {
 
 	public void setImporte(Double importe) {
 		this.importe = importe;
+	}
+
+	@Override
+	public int compareTo(Pedido o) {
+		
+		return 0;
 	}
 
 }
