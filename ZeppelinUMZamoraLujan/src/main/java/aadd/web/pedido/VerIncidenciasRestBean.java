@@ -16,6 +16,7 @@ import aadd.persistencia.dto.IncidenciaDTO;
 import aadd.persistencia.dto.ItemPedidoDTO;
 import aadd.persistencia.dto.PedidoDTO;
 import aadd.persistencia.dto.PlatoDTO;
+import aadd.persistencia.dto.RestauranteDTO;
 import aadd.persistencia.mongo.bean.ItemPedido;
 import aadd.web.usuario.UserSessionWeb;
 import aadd.zeppelinum.ServicioGestionPedido;
@@ -50,6 +51,7 @@ public class VerIncidenciasRestBean implements Serializable {
 	public void init() {
 		servicio = ServicioGestionPlataforma.getServicioGestionPlataforma();
 		servicioPedido = ServicioGestionPedido.getServicioGestionPedido();
+
 		if (mostrarIncidenciasCerradas) {
 			loadIncidencias();
 			
@@ -179,10 +181,14 @@ public class VerIncidenciasRestBean implements Serializable {
 		this.comentarioCierre = comentarioCierre;
 	}
 
+
 	public void loadIncidencias() {
 		
 		incidencias = servicioPedido.getIncidenciasByRest(idRestaurante);
 		
+	}
+	public boolean isResponsable() {
+		return servicio.getRestaurante(idRestaurante).getResponsable() == userSessionWeb.getUsuario().getId();
 	}
 
 	public void buscar(){
@@ -218,6 +224,7 @@ public class VerIncidenciasRestBean implements Serializable {
 		incidencias = servicioPedido.getIncidenciasNoCerradasByRest(idRestaurante);
 	}
 
+	
 
 /*
 	public void verDetalles() {

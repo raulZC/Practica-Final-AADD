@@ -29,7 +29,7 @@ public class RestauranteDAO extends ExtensionDAO<Restaurante> {
     public List<RestauranteDTO> transformarToDTO(List<Restaurante> restaurantes) {
         List<RestauranteDTO> rs = new ArrayList<RestauranteDTO>();
         for (Restaurante r : restaurantes) {
-            rs.add(new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal()));
+            rs.add(new RestauranteDTO(r.getId(), r.getNombre(), r.getValoracionGlobal(),r.getResponsable().getId()));
         }
         return rs;
     }

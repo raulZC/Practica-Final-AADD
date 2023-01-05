@@ -3,6 +3,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 	template="/WEB-INF/template/template_privada.xhtml">
 	<ui:define name="title">
 Incidencias restaurante
@@ -16,176 +17,201 @@ Incidencias restaurante
 	</ui:define>
 	<ui:param name="menuseleccionado" value="#{estilo2}" />
 	<ui:define name="content">
-		<h:form id="incidencias">
-			<div style="margin-top: 10px; margin-bottom: 10px;">
-				<h:panelGroup id="panelBuscador">
-					<p:fieldset legend="Buscador" collapsed="false" toggleable="true">
-						<div class="ui-g ui-fluid">
-							<div class="ui-g-2">Palabra clave:</div>
-							<div class="ui-g-10">
-								<p:inputText value="#{verIncidenciasRestBean.keyword}" />
+		<c:choose>
+			<c:when
+				test="#{userSessionWeb.isLogin() and (userSessionWeb.isRestaurante() or userSessionWeb.isAdmin()) and userSessionWeb.getUsuario().isValidado() and verIncidenciasRestBean.isResponsable()}">
+				<h:form id="incidencias">
+					<div style="margin-top: 10px; margin-bottom: 10px;">
+						<h:panelGroup id="panelBuscador">
+							<p:fieldset legend="Buscador" collapsed="false" toggleable="true">
+								<div class="ui-g ui-fluid">
+									<div class="ui-g-2">Palabra clave:</div>
+									<div class="ui-g-10">
+										<p:inputText value="#{verIncidenciasRestBean.keyword}" />
+									</div>
+
+									<div class="ui-g-2">Incidencias cerradas:</div>
+									<div class="ui-g-2">
+										<p:selectBooleanButton onLabel="Sí" offLabel="No"
+											value="#{verIncidenciasRestBean.mostrarIncidenciasCerradas}"></p:selectBooleanButton>
+									</div>
+								</div>
+								<div style="text-align: center;">
+									<p:commandButton value="Buscar"
+										actionListener="#{verIncidenciasRestBean.buscar()}"
+										update="tabla_header " icon="fa fa-search" />
+								</div>
+								<div style="margin: auto; text-align: center;">
+									<p:ajaxStatus>
+										<f:facet name="start">
+											<i class="pi pi-spin pi-spinner loading-icon"
+												aria-hidden="true"></i>
+										</f:facet>
+										<f:facet name="complete">
+											<h:outputText value="" />
+										</f:facet>
+									</p:ajaxStatus>
+								</div>
+							</p:fieldset>
+						</h:panelGroup>
+					</div>
+
+					<p:dataTable var="incidencia" style="prueba"
+						value="#{verIncidenciasRestBean.incidencias}" rows="5"
+						id="tabla_header"
+						filteredValue="#{verIncidenciasRestBean.fiteredIncidencias}"
+						paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+						emptyMessage="No se han encontrado incidencias"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} incidencias">
+						<p:column headerText="ID" style="width:3rem">
+							<h:outputText value="#{incidencia.id}"></h:outputText>
+						</p:column>
+						<p:column headerText="Fecha apert.">
+							<h:outputText value="#{incidencia.fechaCreacion}"></h:outputText>
+						</p:column>
+						<p:column headerText="Fecha cierre" style="width:7rem">
+							<h:outputText value="#{incidencia.fechaCierre}"></h:outputText>
+						</p:column>
+						<p:column headerText="Cliente" style="width:7rem">
+							<h:outputText value="#{incidencia.usuario.nombre}"></h:outputText>
+						</p:column>
+						<p:column headerText="Restaurante">
+							<h:outputText value="#{incidencia.restaurante.nombre}"></h:outputText>
+						</p:column>
+						<p:column headerText="Estado">
+
+							<ui:fragment style="vertical-align: middle;"
+								rendered="#{incidencia.fechaCierre != null}">
+								<p:graphicImage title="Incidencia cerrada"
+									style="vertical-align: middle;" class="ui-incidencia-cerrada" />
+							</ui:fragment>
+
+							<ui:fragment rendered="#{incidencia.fechaCierre == null}">
+								<p:graphicImage title="Incidencia abierta"
+									style="vertical-align: middle;" class="ui-incidencia-abierta" />
+							</ui:fragment>
+
+
+
+						</p:column>
+						<!-- Quitar o sustituir por ver detalles -->
+						<p:column headerText="ID Pedido" filterBy="#{incidencia.pedido}"
+							filterMatchMode="contains" style="width:13rem">
+							<h:outputText value="#{incidencia.pedido}"></h:outputText>
+						</p:column>
+
+						<p:column>
+
+							<p:commandButton style="margin-left: 2rem;justify-content:center"
+								disabled="#{incidencia.fechaCierre != null}" value=""
+								title="#{incidencia.fechaCierre == null ? 'Cerrar incidencia' : 'Incidencia cerrada'}"
+								styleClass="ui-button-cerrar-incidencia"
+								update="incidencias:cerrarIncDialog"
+								oncomplete="PF('cerrarIncidencia').show();">
+								<f:setPropertyActionListener value="#{incidencia}"
+									target="#{verIncidenciasRestBean.incidenciaSelected}" />
+							</p:commandButton>
+						</p:column>
+						<p:column>
+							<p:commandButton style="margin-left: 2rem;justify-content:center"
+								disabled="#{incidencia.fechaCierre == null}" value=""
+								title="#{incidencia.fechaCierre != null ? 'Ver incidencia resuelta' : 'Incidencia sin resolución'}"
+								styleClass="ui-button-ver-resolucion"
+								update="incidencias:resolIncidenciaDialog"
+								oncomplete="PF('verResolIncidencia').show();">
+								<f:setPropertyActionListener value="#{incidencia}"
+									target="#{verIncidenciasRestBean.incidenciaSelected}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+
+
+					<p:dialog header="Cerrar incidencia" widgetVar="cerrarIncidencia"
+						id="cerrarIncDialog" showEffect="fade" width="700" height="450"
+						modal="true">
+
+						<div style="align-text: center">
+							<p:outputLabel value="Descripción de la incidencia: " />
+							<div>
+								<p style="border: 1px solid #000000; padding: 1rem">#{verIncidenciasRestBean.incidenciaSelected.descripcion}</p>
 							</div>
+						</div>
+						<div style="align-text: center">
 
-							<div class="ui-g-2">Incidencias cerradas:</div>
-							<div class="ui-g-2">
-								<p:selectBooleanButton onLabel="Sí" offLabel="No"
-									value="#{verIncidenciasRestBean.mostrarIncidenciasCerradas}"></p:selectBooleanButton>
+							<p:outputLabel value="Comentario cierre incidencia: " />
+
+							<p:inputTextarea
+								style="box-sizing: border-box;margin-bottom:2rem;min-width: 25rem;"
+								autoResize="false" rows="5"
+								value="#{verIncidenciasRestBean.comentarioCierre}"></p:inputTextarea>
+						</div>
+
+						<p:commandButton value="Cerrar" style="margin-right:5px"
+							onclick="PF('crearIncidencia').hide();" />
+						<p:commandButton value="Cerrar incidencia"
+							styleClass="ui-button-crear-incidencia"
+							actionListener="#{verIncidenciasRestBean.cerrarIncidencia()}"
+							oncomplete="PF('cerrarIncidencia').hide()" update="tabla_header"></p:commandButton>
+					</p:dialog>
+
+					<p:dialog header="Error al cerrar la incidencia"
+						widgetVar="errorCerrandoIncidencia" width="650">
+						<p:outputPanel style="margin: 10px;">
+							<h:outputText
+								value="Se ha producido un error al intentar cerrar la incidencia, prueba más tarde o contacte con el administrador." />
+						</p:outputPanel>
+					</p:dialog>
+
+					<p:dialog header="Incidencia cerrada" widgetVar="incidenciaCerrada"
+						width="650">
+						<p:outputPanel style="margin: 10px;">
+							<h:outputText value="Se ha cerrado la incidencia correctamente" />
+						</p:outputPanel>
+					</p:dialog>
+
+
+					<p:dialog header="Resolución de la incidencia"
+						widgetVar="verResolIncidencia" id="resolIncidenciaDialog"
+						showEffect="fade" width="700" height="450" modal="true">
+						<div style="align-text: center">
+							<p:outputLabel value="Descripción de la incidencia: " />
+							<div>
+								<p
+									style="border: 1px solid #000000; padding: 1rem; min-height: 7rem">#{verIncidenciasRestBean.incidenciaSelected.descripcion}</p>
 							</div>
 						</div>
-						<div style="text-align: center;">
-							<p:commandButton value="Buscar"
-								actionListener="#{verIncidenciasRestBean.buscar()}"
-								update="tabla_header " icon="fa fa-search" />
+						<div style="align-text: center">
+
+							<p:outputLabel value="Comentario cierre incidencia: " />
+
+							<div>
+								<p
+									style="border: 1px solid #000000; padding: 1rem; min-height: 7rem">#{verIncidenciasRestBean.incidenciaSelected.comentarioCierre}</p>
+							</div>
 						</div>
-						<div style="margin: auto; text-align: center;">
-							<p:ajaxStatus>
-								<f:facet name="start">
-									<i class="pi pi-spin pi-spinner loading-icon"
-										aria-hidden="true"></i>
-								</f:facet>
-								<f:facet name="complete">
-									<h:outputText value="" />
-								</f:facet>
-							</p:ajaxStatus>
-						</div>
-					</p:fieldset>
-				</h:panelGroup>
-			</div>
 
-			<p:dataTable var="incidencia" style="prueba"
-				value="#{verIncidenciasRestBean.incidencias}" rows="5"
-				id="tabla_header"
-				filteredValue="#{verIncidenciasRestBean.fiteredIncidencias}"
-				paginator="true" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-				emptyMessage="No se han encontrado incidencias"
-				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} incidencias">
-				<p:column headerText="ID" style="width:3rem">
-					<h:outputText value="#{incidencia.id}"></h:outputText>
-				</p:column>
-				<p:column headerText="Fecha apert.">
-					<h:outputText value="#{incidencia.fechaCreacion}"></h:outputText>
-				</p:column>
-				<p:column headerText="Fecha cierre" style="width:7rem">
-					<h:outputText value="#{incidencia.fechaCierre}"></h:outputText>
-				</p:column>
-				<p:column headerText="Cliente" style="width:7rem">
-					<h:outputText value="#{incidencia.usuario.nombre}"></h:outputText>
-				</p:column>
-				<p:column headerText="Restaurante">
-					<h:outputText value="#{incidencia.restaurante.nombre}"></h:outputText>
-				</p:column>
-				<p:column headerText="Estado">
-
-					<ui:fragment style="vertical-align: middle;" rendered="#{incidencia.fechaCierre != null}">
-						<p:graphicImage title="Incidencia cerrada" style="vertical-align: middle;" class="ui-incidencia-cerrada" />
-					</ui:fragment>
-
-					<ui:fragment rendered="#{incidencia.fechaCierre == null}">
-						<p:graphicImage title="Incidencia abierta" style="vertical-align: middle;" class="ui-incidencia-abierta" />
-					</ui:fragment>
-
-
-
-				</p:column> <!-- Quitar o sustituir por ver detalles -->
-				<p:column headerText="ID Pedido" filterBy="#{incidencia.pedido}"
-					filterMatchMode="contains" style="width:13rem">
-					<h:outputText value="#{incidencia.pedido}"></h:outputText>
-				</p:column>
-
-				<p:column>
-
-					<p:commandButton style="margin-left: 2rem;justify-content:center"
-						disabled="#{incidencia.fechaCierre != null}"
-						value=""
-						title="#{incidencia.fechaCierre == null ? 'Cerrar incidencia' : 'Incidencia cerrada'}"
-						styleClass="ui-button-cerrar-incidencia"
-						update="incidencias:cerrarIncDialog"
-						oncomplete="PF('cerrarIncidencia').show();">
-						<f:setPropertyActionListener value="#{incidencia}"
-							target="#{verIncidenciasRestBean.incidenciaSelected}" />
-					</p:commandButton>
-				</p:column>
-				<p:column>
-					<p:commandButton style="margin-left: 2rem;justify-content:center"
-						disabled="#{incidencia.fechaCierre == null}"
-						value=""
-						title="#{incidencia.fechaCierre != null ? 'Ver incidencia resuelta' : 'Incidencia sin resolución'}"
-						styleClass="ui-button-ver-resolucion"
-						update="incidencias:resolIncidenciaDialog"
-						oncomplete="PF('verResolIncidencia').show();">
-						<f:setPropertyActionListener value="#{incidencia}"
-							target="#{verIncidenciasRestBean.incidenciaSelected}" />
-					</p:commandButton>
-				</p:column>
-
-			</p:dataTable>
-
-
-
-			<p:dialog header="Cerrar incidencia" widgetVar="cerrarIncidencia"
-				id="cerrarIncDialog" showEffect="fade" width="700" height="450"
-				modal="true">
-
-				<div style="align-text: center">
-					<p:outputLabel value="Descripción de la incidencia: " />
-					<div>
-						<p style="border: 1px solid #000000; padding: 1rem">#{verIncidenciasRestBean.incidenciaSelected.descripcion}</p>
-					</div>
-				</div>
-				<div style="align-text: center">
-
-					<p:outputLabel value="Comentario cierre incidencia: " />
-
-					<p:inputTextarea
-						style="box-sizing: border-box;margin-bottom:2rem;min-width: 25rem;"
-						autoResize="false" rows="5"
-						value="#{verIncidenciasRestBean.comentarioCierre}"></p:inputTextarea>
-				</div>
-
-				<p:commandButton value="Cerrar" style="margin-right:5px"
-					onclick="PF('crearIncidencia').hide();" />
-				<p:commandButton value="Cerrar incidencia"
-					styleClass="ui-button-crear-incidencia"
-					actionListener="#{verIncidenciasRestBean.cerrarIncidencia()}"
-					oncomplete="PF('cerrarIncidencia').hide()" update="tabla_header"></p:commandButton>
-			</p:dialog>
-
-			<p:dialog header="Error al cerrar la incidencia"
-				widgetVar="errorCerrandoIncidencia" width="650">
-				<p:outputPanel style="margin: 10px;">
-					<h:outputText
-						value="Se ha producido un error al intentar cerrar la incidencia, prueba más tarde o contacte con el administrador." />
-				</p:outputPanel>
-			</p:dialog>
-
-			<p:dialog header="Incidencia cerrada" widgetVar="incidenciaCerrada"
-				width="650">
-				<p:outputPanel style="margin: 10px;">
-					<h:outputText value="Se ha cerrado la incidencia correctamente" />
-				</p:outputPanel>
-			</p:dialog>
-			
-			
-			<p:dialog header="Resolución de la incidencia" widgetVar="verResolIncidencia"
-				id="resolIncidenciaDialog" showEffect="fade" width="700" height="450"
-				modal="true">
-				<div style="align-text: center">
-					<p:outputLabel value="Descripción de la incidencia: " />
-					<div>
-						<p style="border: 1px solid #000000; padding: 1rem;min-height: 7rem">#{verIncidenciasRestBean.incidenciaSelected.descripcion}</p>
-					</div>
-				</div>
-				<div style="align-text: center">
-
-					<p:outputLabel value="Comentario cierre incidencia: " />
-
-					<div>
-						<p style="border: 1px solid #000000; padding: 1rem;min-height: 7rem">#{verIncidenciasRestBean.incidenciaSelected.comentarioCierre}</p>
-					</div>
-				</div>
+					</p:dialog>
+				</h:form>
 				
-			</p:dialog>
-		</h:form>
+							</c:when>
+			<c:otherwise>
+				<p:fragment
+					rendered="#{userSessionWeb.isLogin() and userSessionWeb.isRestaurante()}">
+					<div
+						style="text-align: center; font-size: larger; font-weight: bolder;">
+						Lo sentimos, no puede acceder a esta página.</div>
+				</p:fragment>
+				<p:fragment
+					rendered="#{userSessionWeb.isLogin() and !userSessionWeb.isRestaurante()}">
+					<div
+						style="text-align: center; font-size: larger; font-weight: bolder;">
+						Lo sentimos, solo los usuarios del tipo restaurante tienen acceso
+						a esta página.</div>
+				</p:fragment>
+			</c:otherwise>
+		</c:choose>
 	</ui:define>
 </ui:composition>

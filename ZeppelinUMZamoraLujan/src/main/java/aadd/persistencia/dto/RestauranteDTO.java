@@ -12,7 +12,7 @@ public class RestauranteDTO implements Serializable{
 	protected Integer id;
     protected String nombre;
     protected Double valoracionGlobal;  
-    
+    protected Integer responsable;
     private Double longitud;
     private Double latitud;
     private String calle;
@@ -20,11 +20,12 @@ public class RestauranteDTO implements Serializable{
     private String ciudad;
     private Integer numero;
     
-    public RestauranteDTO(Integer id, String nombre, Double valoracionGlobal) {
+    public RestauranteDTO(Integer id, String nombre, Double valoracionGlobal,Integer responsable) {
         super();
         this.id = id;
         this.nombre = nombre;
         this.valoracionGlobal = valoracionGlobal;
+        this.responsable= responsable;
     }
         
     public RestauranteDTO(Integer id, String nombre, Double valoracionGlobal, Double longitud, Double latitud,
@@ -111,5 +112,13 @@ public class RestauranteDTO implements Serializable{
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+	}
+
+	public Integer getResponsable() {
+		return responsable;
+	}
+
+	public void setResponsable(Integer responsable) {
+		this.responsable = responsable;
 	}
 }
