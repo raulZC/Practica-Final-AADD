@@ -144,7 +144,7 @@ public class ServicioGestionPedido {
 			itemPedidoDAO.crearItemPedido(itemPedido.getPlato(), pedido.getId(), itemPedido.getCantidad(),
 					itemPedido.getCantidad() * itemPedido.getPrecioTotal());
 		}
-		zeppelinumRemoto.pedidoIniciado(pedido.toString());
+		zeppelinumRemoto.pedidoIniciado(pedido.getId().toString());
 		return true;
 	}
 
@@ -218,12 +218,14 @@ public class ServicioGestionPedido {
 		switch (tipo) {
 		case INICIO:
 			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.ACEPTADO);
+			zeppelinumRemoto.penalizacionRestaurante(id.toString());
 			return TipoEstado.ACEPTADO;
 		case ACEPTADO:
 			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.PREPARADO);
 			return TipoEstado.PREPARADO;
 		case PREPARADO:
 			estadoPedidoDAO.crearEstadoPedido(id, fecha, TipoEstado.RECOGIDO);
+			zeppelinumRemoto.pedidoRecogido(id.toString());
 			return TipoEstado.RECOGIDO;
 		default:
 			return TipoEstado.ERROR;
@@ -262,14 +264,14 @@ public class ServicioGestionPedido {
 	        // Buscar el usuario
 	        Usuario usuario = UsuarioDAO.getUsuarioDAO().findById(idUsuario);
 	        if (usuario == null){
-	            // Si no se encuentra el usuario, lanzar una excepciÃ³n
-	            throw new Exception("No se encontrÃ³ el usuario con ID " + idUsuario);
+	            // Si no se encuentra el usuario, lanzar una excepción
+	            throw new Exception("No se encontró el usuario con ID " + idUsuario);
 	        }
 	        // Buscar el restaurante
 	        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(idRestaurante);
 	        if (restaurante == null){
-	            // Si no se encuentra el restaurante, lanzar una excepciÃ³n
-	            throw new Exception("No se encontrÃ³ el restaurante con ID " + idRestaurante);
+	            // Si no se encuentra el restaurante, lanzar una excepción
+	            throw new Exception("No se encontró el restaurante con ID " + idRestaurante);
 	        }
 	    
 	        // Crear la incidencia
@@ -353,8 +355,8 @@ public class ServicioGestionPedido {
 	       
 	
 	        if (incidencia == null){
-	            // Si no se encuentra el usuario, lanzar una excepciÃ³n
-	            throw new Exception("No se encontrÃ³ la incidencia con ID " + idIncidencia);
+	            // Si no se encuentra el usuario, lanzar una excepción
+	            throw new Exception("No se encontró la incidencia con ID " + idIncidencia);
 	        }
 	        
 	        incidencia.setFechaCierre(LocalDate.now());
@@ -363,14 +365,14 @@ public class ServicioGestionPedido {
 	        // Buscar el usuario
 	        Usuario usuario = UsuarioDAO.getUsuarioDAO().findById(incidencia.getUsuario().getId());
 	        if (usuario == null){
-	            // Si no se encuentra el usuario, lanzar una excepciÃ³n
-	            throw new Exception("No se encontrÃ³ el usuario con ID " + incidencia.getUsuario().getId());
+	            // Si no se encuentra el usuario, lanzar una excepción
+	            throw new Exception("No se encontró el usuario con ID " + incidencia.getUsuario().getId());
 	        }
 	        // Buscar el restaurante
 	        Restaurante restaurante = RestauranteDAO.getRestauranteDAO().findById(incidencia.getRestaurante().getId());
 	        if (restaurante == null){
-	            // Si no se encuentra el restaurante, lanzar una excepciÃ³n
-	            throw new Exception("No se encontrÃ³ el restaurante con ID " + incidencia.getRestaurante().getId());
+	            // Si no se encuentra el restaurante, lanzar una excepción
+	            throw new Exception("No se encontró el restaurante con ID " + incidencia.getRestaurante().getId());
 	        }
 	       
 	       

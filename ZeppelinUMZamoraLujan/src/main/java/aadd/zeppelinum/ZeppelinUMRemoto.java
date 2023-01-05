@@ -10,6 +10,8 @@ import aadd.persistencia.dto.EstadisticaOpinionDTO;
 public interface ZeppelinUMRemoto { 
     public Integer getNumVisitas(Integer idUsuario);
     public void pedidoIniciado(String pedido);
+	public void pedidoRecogido(String pedido);
+	public void penalizacionRestaurante(String pedido);
     public List<EstadisticaOpinionDTO> getEstadisticasOpinion(Integer idUsuario);
 
 }

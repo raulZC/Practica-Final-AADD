@@ -47,19 +47,23 @@ public class EstadoPedidoWeb implements Serializable {
 	}
 
 	public void avanzarEstadoPedido(int id) {
-		TipoEstado estado = servicioPedido.avanzarEstado(listaPedidosDTO.get(id - 1).getIdReal());
-		if (estado.equals(TipoEstado.ERROR)) {
-			PrimeFaces current = PrimeFaces.current();
-			current.executeScript("PF('errorEstado').show();");
+		if (!listaPedidosDTO.isEmpty() && id != 0) {
+			TipoEstado estado = servicioPedido.avanzarEstado(listaPedidosDTO.get(id - 1).getIdReal());
+			if (estado.equals(TipoEstado.ERROR)) {
+				PrimeFaces current = PrimeFaces.current();
+				current.executeScript("PF('errorEstado').show();");
+			}
 		}
 
 	}
 
 	public void cancelarPedido(int id) {
-		TipoEstado estado = servicioPedido.cancelarPedido(listaPedidosDTO.get(id - 1).getIdReal());
-		if (estado.equals(TipoEstado.ERROR)) {
-			PrimeFaces current = PrimeFaces.current();
-			current.executeScript("PF('errorEstado').show();");
+		if (!listaPedidosDTO.isEmpty() && id != 0) {
+			TipoEstado estado = servicioPedido.cancelarPedido(listaPedidosDTO.get(id - 1).getIdReal());
+			if (estado.equals(TipoEstado.ERROR)) {
+				PrimeFaces current = PrimeFaces.current();
+				current.executeScript("PF('errorEstado').show();");
+			}
 		}
 	}
 

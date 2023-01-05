@@ -41,6 +41,7 @@ public class EstadisticasWeb implements Serializable {
 
     private void createLineModel() {
         List<EstadisticaOpinionDTO> estadisticas = servicioPlataforma.getEstadisticasOpinion(usuarioSesion.getUsuario().getId());
+        System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +estadisticas.isEmpty());
         lineModel = new LineChartModel();
         ChartData data = new ChartData();
 
