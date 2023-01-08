@@ -44,7 +44,7 @@ public class EstadisticasWeb implements Serializable {
 
 	@PostConstruct
 	public void initLineChart() {
-		if (usuarioSesion.getUsuario().getTipo().equals(TipoUsuario.ADMIN)) {
+		if (usuarioSesion.getUsuario().getTipo().equals(TipoUsuario.RESTAURANTE)) {
 			createLineModelValoraciones();
 			createLineModelPedidosEstados();
 			header1 = "Valoraciones";
