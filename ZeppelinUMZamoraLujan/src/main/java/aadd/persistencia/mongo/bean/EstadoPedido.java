@@ -3,6 +3,7 @@ package aadd.persistencia.mongo.bean;
 import java.io.Serializable;
 import java.util.Date;
 
+
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
@@ -58,5 +59,4 @@ public class EstadoPedido implements Serializable, Comparable<EstadoPedido> {
 			return -1;
 		return 0;
 	}
-
 }

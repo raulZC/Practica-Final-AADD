@@ -1,13 +1,15 @@
 package aadd.persistencia.mongo.bean;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-public class Pedido implements Serializable, Comparable<Pedido> {
+public class Pedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -122,10 +124,17 @@ public class Pedido implements Serializable, Comparable<Pedido> {
 		this.importe = importe;
 	}
 
-	@Override
-	public int compareTo(Pedido o) {
-		
-		return 0;
+	public int getDifferenceBetwenDates(Date dateInicio) {
+	    long milliseconds = this.fechaEsperado.getTime() - dateInicio.getTime();
+	    int seconds = (int) (milliseconds / 1000) % 60;
+	    int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
+	    int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
+	    Calendar c = Calendar.getInstance();
+	    c.set(Calendar.SECOND, seconds);
+	    c.set(Calendar.MINUTE, minutes);
+	    c.set(Calendar.HOUR_OF_DAY, hours);
+	    SimpleDateFormat sdfResultMinutos = new SimpleDateFormat("m");
+	    String minutos = sdfResultMinutos.format(c.getTime());
+	    return Integer.parseInt(minutos);
 	}
-
 }
